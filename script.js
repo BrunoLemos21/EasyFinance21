@@ -39,6 +39,26 @@ async function fetchDadosFMP(codigo) {
   }
 }
 
+async function fetchHistoricoFMP(codigo) {
+  try {
+    const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${codigo}?timeseries=7&apikey=${API_KEY_FMP}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    if (!json.historical) return null;
+
+    // Ordenar do mais antigo para o mais recente
+    const historico = json.historical.reverse();
+
+    return {
+      labels: historico.map(d => d.date),
+      valores: historico.map(d => d.close)
+    };
+  } catch (e) {
+    console.error('Erro fetch histórico FMP:', e);
+    return null;
+  }
+}
+
 async function fetchDadosCoinGecko(id, vs) {
   try {
     const url = `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${vs}&include_24hr_change=true`;
@@ -51,6 +71,25 @@ async function fetchDadosCoinGecko(id, vs) {
   } catch (e) {
     console.error(`Erro fetch CoinGecko para ${id}`, e);
     return { preco: '--', variacao: '0.00' };
+  }
+}
+
+async function fetchHistoricoCoinGecko(id) {
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7&interval=daily`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    return {
+      labels: json.prices.map(p => {
+        const d = new Date(p[0]);
+        return d.toISOString().slice(0, 10);
+      }),
+      valores: json.prices.map(p => p[1].toFixed(2))
+    };
+  } catch (e) {
+    console.error('Erro fetch histórico CoinGecko:', e);
+    return null;
   }
 }
 
@@ -97,26 +136,48 @@ async function exibirAtivos() {
     `;
     container.appendChild(card);
 
-    gerarGraficoSimples(`grafico-${ativo.codigo}`, dados.variacao);
+    // Gera o gráfico dos últimos 7 dias
+    await gerarGraficoSeteDias(`grafico-${ativo.codigo}`, ativo);
   }
 }
 
-function gerarGraficoSimples(id, variacao) {
+async function gerarGraficoSeteDias(id, ativo) {
+  let dadosHistorico = null;
+
+  if (ativo.origem === 'fmp') {
+    dadosHistorico = await fetchHistoricoFMP(ativo.codigo);
+  } else if (ativo.origem === 'coingecko') {
+    dadosHistorico = await fetchHistoricoCoinGecko(ativo.codigo);
+  } else {
+    // Para fiat, não tem histórico — pula gráfico
+    return;
+  }
+
+  if (!dadosHistorico) return;
+
   const ctx = document.getElementById(id).getContext('2d');
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ["Ontem", "Hoje"],
+      labels: dadosHistorico.labels,
       datasets: [{
-        label: "% de Variação",
-        data: [0, Number(variacao)],
-        borderColor: variacao >= 0 ? 'green' : 'red',
-        tension: 0.4
+        label: 'Preço (últimos 7 dias)',
+        data: dadosHistorico.valores,
+        borderColor: '#0B515A',
+        backgroundColor: 'rgba(11, 81, 90, 0.2)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3
       }]
     },
     options: {
-      scales: { y: { beginAtZero: true } },
-      plugins: { legend: { display: false } }
+      scales: {
+        y: { beginAtZero: false },
+        x: { ticks: { maxRotation: 45, minRotation: 45 } }
+      },
+      plugins: {
+        legend: { display: true }
+      }
     }
   });
 }
