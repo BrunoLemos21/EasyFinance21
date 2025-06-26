@@ -1,57 +1,106 @@
 const ativos = [
-  { codigo: 'BTC', nome: 'Bitcoin/USD', tipo: 'cripto', cgId: 'bitcoin', vs: 'usd' },
-  { codigo: 'ETH', nome: 'Ethereum/USD', tipo: 'cripto', cgId: 'ethereum', vs: 'usd' },
-  { codigo: 'BRL', nome: 'BRL/USD', tipo: 'fiat', cgId: null, vs: 'usd' },
-  { codigo: 'EUR', nome: 'EUR/USD', tipo: 'fiat', cgId: null, vs: 'usd' },
-  { codigo: 'BBAS3.SA', nome: 'Banco do Brasil PN', tipo: 'acao' },
-  { codigo: 'SOJA3.SA', nome: 'Boa Safra SOJA3', tipo: 'acao' },
-  { codigo: 'CASH3.SA', nome: 'Cosan', tipo: 'acao' },
-  { codigo: 'CMIG4.SA', nome: 'Cemig', tipo: 'acao' },
-  { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fii' },
-  { codigo: 'XPML11.SA', nome: 'XPML11', tipo: 'fii' },
-  { codigo: 'RZTR11.SA', nome: 'RZTR11', tipo: 'fii' },
-  { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fii' },
-  { codigo: 'BTHF11.SA', nome: 'BTHF11', tipo: 'fii' }
+  { codigo: 'bitcoin', nome: 'Bitcoin/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'ethereum', nome: 'Ethereum/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'brl', nome: 'BRL/USD', tipo: 'fiat', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'eur', nome: 'EUR/USD', tipo: 'fiat', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'BBAS3.SA', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'yahoo' },
+  { codigo: 'SOJA3.SA', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'yahoo' },
+  { codigo: 'CASH3.SA', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'yahoo' },
+  { codigo: 'CMIG4.SA', nome: 'Cemig (CMIG4)', tipo: 'acao', origem: 'yahoo' },
+  { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fii', origem: 'yahoo' },
+  { codigo: 'XPML11.SA', nome: 'XPML11', tipo: 'fii', origem: 'yahoo' },
+  { codigo: 'RZTR11.SA', nome: 'RZTR11', tipo: 'fii', origem: 'yahoo' },
+  { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fii', origem: 'yahoo' },
+  { codigo: 'BTHF11.SA', nome: 'BTHF11', tipo: 'fii', origem: 'yahoo' }
 ];
 
-async function fetchAtivo(ativo) {
-  if (ativo.tipo === 'cripto' || ativo.tipo === 'fiat') {
-    const id = ativo.tipo === 'fiat'
-      ? ativo.nome.split('/')[0].toLowerCase()
-      : ativo.cgId;
-    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${ativo.vs}&include_24hr_change=true`);
-    const json = await res.json();
-    const price = json[id][ativo.vs].toFixed(2);
-    const change = json[id][`${ativo.vs}_24h_change`].toFixed(2);
-    return { price, change };
-  } else {
-    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ativo.codigo}`;
-    const res = await fetch(url);
-    const json = await res.json();
-    const quote = json.quoteResponse.result[0];
-    const price = parseFloat(quote.regularMarketPrice).toFixed(2);
-    const change = parseFloat(quote.regularMarketChangePercent).toFixed(2);
-    return { price, change };
-  }
+const icones = {
+  'cripto': '💰',
+  'fiat': '💱',
+  'acao': '📈',
+  'fii': '🏢'
+};
+
+async function fetchDadosYahoo(codigo) {
+  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${codigo}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  const quote = json.quoteResponse.result[0];
+  return {
+    preco: quote.regularMarketPrice.toFixed(2),
+    variacao: quote.regularMarketChangePercent.toFixed(2)
+  };
+}
+
+async function fetchDadosCoinGecko(id, vs) {
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${vs}&include_24hr_change=true`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return {
+    preco: json[id][vs].toFixed(2),
+    variacao: json[id][`${vs}_24h_change`].toFixed(2)
+  };
 }
 
 async function exibirAtivos() {
   const container = document.getElementById('ativos-container');
   container.innerHTML = '';
+
   for (const ativo of ativos) {
-    const { price, change } = await fetchAtivo(ativo);
-    const cor = change >= 0 ? 'green' : 'red';
-    const simbolo = change >= 0 ? '▲' : '▼';
+    let dados = { preco: '--', variacao: '0.00' };
+
+    try {
+      if (ativo.origem === 'coingecko') {
+        dados = await fetchDadosCoinGecko(ativo.codigo, ativo.vs);
+      } else {
+        dados = await fetchDadosYahoo(ativo.codigo);
+      }
+    } catch (e) {
+      console.error(`Erro ao buscar dados de ${ativo.nome}:`, e);
+    }
+
+    const cor = dados.variacao >= 0 ? 'green' : 'red';
+    const simbolo = dados.variacao >= 0 ? '▲' : '▼';
+
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <h3>${ativo.tipo==='cripto'? '💰' : ativo.tipo==='acao'? '📈' : '🏢'} ${ativo.nome}</h3>
+      <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
       <p><strong>Código:</strong> ${ativo.codigo}</p>
-      <p><strong>Preço:</strong> ${(ativo.tipo==='fiat'? '$' : 'R$')} ${price}</p>
-      <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${change}%</span></p>
+      <p><strong>Preço:</strong> ${ativo.tipo === 'fiat' ? '$' : 'R$'} ${dados.preco}</p>
+      <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${dados.variacao}%</span></p>
+      <canvas id="grafico-${ativo.codigo}" height="100"></canvas>
     `;
     container.appendChild(card);
+
+    gerarGraficoSimples(`grafico-${ativo.codigo}`, dados.variacao);
   }
 }
 
-document.addEventListener('DOMContentLoaded', exibirAtivos);
+function gerarGraficoSimples(id, variacao) {
+  const ctx = document.getElementById(id).getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["Ontem", "Hoje"],
+      datasets: [{
+        label: "% de Variação",
+        data: [0, Number(variacao)],
+        borderColor: variacao >= 0 ? 'green' : 'red',
+        tension: 0.4
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
+
+// Atualiza os dados a cada 2 minutos
+exibirAtivos();
+setInterval(exibirAtivos, 120000);
