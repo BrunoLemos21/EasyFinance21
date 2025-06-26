@@ -1,8 +1,8 @@
 const ativos = [
   { codigo: 'bitcoin', nome: 'Bitcoin/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
   { codigo: 'ethereum', nome: 'Ethereum/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
-  { codigo: 'brl', nome: 'BRL/USD', tipo: 'fiat', origem: 'coingecko', vs: 'usd' },
-  { codigo: 'eur', nome: 'EUR/USD', tipo: 'fiat', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'BRL', nome: 'BRL/USD', tipo: 'fiat', origem: 'fiat' },
+  { codigo: 'EUR', nome: 'EUR/USD', tipo: 'fiat', origem: 'fiat' },
   { codigo: 'BBAS3.SA', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'yahoo' },
   { codigo: 'SOJA3.SA', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'yahoo' },
   { codigo: 'CASH3.SA', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'yahoo' },
@@ -22,7 +22,7 @@ const icones = {
 };
 
 async function fetchDadosYahoo(codigo) {
-  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${codigo}`;
+  const url = `https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v7/finance/quote?symbols=${codigo}`;
   const res = await fetch(url);
   const json = await res.json();
   const quote = json.quoteResponse.result[0];
@@ -42,6 +42,17 @@ async function fetchDadosCoinGecko(id, vs) {
   };
 }
 
+async function fetchDadosFiat(code) {
+  const url = `https://api.exchangerate.host/latest?base=USD&symbols=${code}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  const rate = json.rates[code];
+  return {
+    preco: rate.toFixed(4),
+    variacao: 0.00
+  };
+}
+
 async function exibirAtivos() {
   const container = document.getElementById('ativos-container');
   container.innerHTML = '';
@@ -52,6 +63,8 @@ async function exibirAtivos() {
     try {
       if (ativo.origem === 'coingecko') {
         dados = await fetchDadosCoinGecko(ativo.codigo, ativo.vs);
+      } else if (ativo.origem === 'fiat') {
+        dados = await fetchDadosFiat(ativo.codigo);
       } else {
         dados = await fetchDadosYahoo(ativo.codigo);
       }
@@ -101,6 +114,5 @@ function gerarGraficoSimples(id, variacao) {
   });
 }
 
-// Atualiza os dados a cada 2 minutos
 exibirAtivos();
 setInterval(exibirAtivos, 120000);
