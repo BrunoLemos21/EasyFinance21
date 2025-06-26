@@ -9,7 +9,6 @@ document.getElementById('formSimulador').addEventListener('submit', function (e)
 
   let saldoCom = inicial;
   let saldoSem = inicial;
-  let saldoInflacao = inicial;
   let dadosCom = [], dadosSem = [], dadosInflacao = [];
 
   const tabela = document.getElementById('tabelaResultado');
@@ -18,18 +17,22 @@ document.getElementById('formSimulador').addEventListener('submit', function (e)
   for (let i = 1; i <= periodo; i++) {
     saldoCom = (saldoCom + aporte) * (1 + taxa);
     saldoSem = saldoSem * (1 + taxa);
-    saldoInflacao = saldoInflacao * (1 + inflacao);
 
-    dadosCom.push(saldoCom.toFixed(2));
-    dadosSem.push(saldoSem.toFixed(2));
-    dadosInflacao.push(saldoInflacao.toFixed(2));
+    // Corrige os valores pela inflação acumulada
+    const saldoComCorrigido = saldoCom / Math.pow(1 + inflacao, i);
+    const saldoSemCorrigido = saldoSem / Math.pow(1 + inflacao, i);
+    const referenciaInflacao = inicial / Math.pow(1 + inflacao, i); // valor inicial depreciado pela inflação
+
+    dadosCom.push(saldoComCorrigido.toFixed(2));
+    dadosSem.push(saldoSemCorrigido.toFixed(2));
+    dadosInflacao.push(referenciaInflacao.toFixed(2));
 
     const linha = `
       <tr>
         <td>${i}</td>
-        <td>R$ ${saldoCom.toFixed(2)}</td>
-        <td>R$ ${saldoSem.toFixed(2)}</td>
-        <td>R$ ${saldoInflacao.toFixed(2)}</td>
+        <td>R$ ${saldoComCorrigido.toFixed(2)}</td>
+        <td>R$ ${saldoSemCorrigido.toFixed(2)}</td>
+        <td>R$ ${referenciaInflacao.toFixed(2)}</td>
       </tr>`;
     tabela.innerHTML += linha;
   }
@@ -48,21 +51,21 @@ function gerarGrafico(dadosCom, dadosSem, dadosInflacao) {
       labels: dadosCom.map((_, i) => `Mês ${i + 1}`),
       datasets: [
         {
-          label: 'Com Aportes',
+          label: 'Com Aportes (ajustado)',
           data: dadosCom,
-          borderColor: 'green',
+          borderColor: '#0b515a',
           tension: 0.3,
           fill: false
         },
         {
-          label: 'Sem Aportes',
+          label: 'Sem Aportes (ajustado)',
           data: dadosSem,
-          borderColor: 'blue',
+          borderColor: '#aaa',
           tension: 0.3,
           fill: false
         },
         {
-          label: 'Inflação',
+          label: 'Inflação (poder de compra)',
           data: dadosInflacao,
           borderColor: 'orange',
           borderDash: [5, 5],
@@ -76,6 +79,11 @@ function gerarGrafico(dadosCom, dadosSem, dadosInflacao) {
       plugins: {
         legend: {
           position: 'bottom'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
         }
       }
     }
