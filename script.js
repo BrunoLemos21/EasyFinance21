@@ -3,15 +3,15 @@ const ativos = [
   { codigo: 'ethereum', nome: 'Ethereum/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
   { codigo: 'BRL', nome: 'BRL/USD', tipo: 'fiat', origem: 'fiat' },
   { codigo: 'EUR', nome: 'EUR/USD', tipo: 'fiat', origem: 'fiat' },
-  { codigo: 'BBAS3.SA', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'yahoo' },
-  { codigo: 'SOJA3.SA', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'yahoo' },
-  { codigo: 'CASH3.SA', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'yahoo' },
-  { codigo: 'CMIG4.SA', nome: 'Cemig (CMIG4)', tipo: 'acao', origem: 'yahoo' },
-  { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fii', origem: 'yahoo' },
-  { codigo: 'XPML11.SA', nome: 'XPML11', tipo: 'fii', origem: 'yahoo' },
-  { codigo: 'RZTR11.SA', nome: 'RZTR11', tipo: 'fii', origem: 'yahoo' },
-  { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fii', origem: 'yahoo' },
-  { codigo: 'BTHF11.SA', nome: 'BTHF11', tipo: 'fii', origem: 'yahoo' }
+  { codigo: 'BBAS3.SA', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'SOJA3.SA', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'CASH3.SA', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'CMIG4.SA', nome: 'Cemig (CMIG4)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'XPML11.SA', nome: 'XPML11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'RZTR11.SA', nome: 'RZTR11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'BTHF11.SA', nome: 'BTHF11', tipo: 'fii', origem: 'fmp' }
 ];
 
 const icones = {
@@ -21,14 +21,16 @@ const icones = {
   'fii': '🏢'
 };
 
-async function fetchDadosYahoo(codigo) {
-  const url = `https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v7/finance/quote?symbols=${codigo}`;
+const API_KEY_FMP = '2jQp09ts8rYRQfpJRSMbl2rYWe3cmrNj';
+
+async function fetchDadosFMP(codigo) {
+  const url = `https://financialmodelingprep.com/api/v3/quote-short/${codigo}?apikey=${API_KEY_FMP}`;
   const res = await fetch(url);
   const json = await res.json();
-  const quote = json.quoteResponse.result[0];
+  const data = json[0] || {};
   return {
-    preco: quote.regularMarketPrice.toFixed(2),
-    variacao: quote.regularMarketChangePercent.toFixed(2)
+    preco: data.price ? data.price.toFixed(2) : '--',
+    variacao: '0.00' // Pode ajustar para buscar variação se quiser depois
   };
 }
 
@@ -43,12 +45,10 @@ async function fetchDadosCoinGecko(id, vs) {
 }
 
 async function fetchDadosFiat(code) {
-  const url = `https://api.exchangerate.host/latest?base=USD&symbols=${code}`;
-  const res = await fetch(url);
+  const res = await fetch(`https://api.exchangerate.host/convert?from=USD&to=${code}`);
   const json = await res.json();
-  const rate = json.rates[code];
   return {
-    preco: rate.toFixed(4),
+    preco: json.result?.toFixed(4) || '--',
     variacao: 0.00
   };
 }
@@ -59,14 +59,13 @@ async function exibirAtivos() {
 
   for (const ativo of ativos) {
     let dados = { preco: '--', variacao: '0.00' };
-
     try {
       if (ativo.origem === 'coingecko') {
         dados = await fetchDadosCoinGecko(ativo.codigo, ativo.vs);
       } else if (ativo.origem === 'fiat') {
         dados = await fetchDadosFiat(ativo.codigo);
-      } else {
-        dados = await fetchDadosYahoo(ativo.codigo);
+      } else if (ativo.origem === 'fmp') {
+        dados = await fetchDadosFMP(ativo.codigo);
       }
     } catch (e) {
       console.error(`Erro ao buscar dados de ${ativo.nome}:`, e);
@@ -104,12 +103,8 @@ function gerarGraficoSimples(id, variacao) {
       }]
     },
     options: {
-      scales: {
-        y: { beginAtZero: true }
-      },
-      plugins: {
-        legend: { display: false }
-      }
+      scales: { y: { beginAtZero: true } },
+      plugins: { legend: { display: false } }
     }
   });
 }
