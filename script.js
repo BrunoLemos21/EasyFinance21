@@ -1,7 +1,7 @@
 const ativos = [
   { codigo: 'PETR4.SA', nome: 'Petrobras PN', tipo: 'ações' },
   { codigo: 'VALE3.SA', nome: 'Vale', tipo: 'ações' },
-  { codigo: 'BTC-USD', nome: 'Bitcoin/USD', tipo: 'cripto' },
+  { codigo: 'BTC-USD', nome: 'Bitcoin/USD', tipo: 'cripto', api: 'bitcoin' },
   { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fiis' },
   { codigo: 'ITUB4.SA', nome: 'Itaú Unibanco PN', tipo: 'ações' },
   { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fiis' }
@@ -22,21 +22,45 @@ function exibirAtivos(tipoSelecionado = 'todos') {
     .sort((a, b) => a.nome.localeCompare(b.nome));
 
   ativosFiltrados.forEach(ativo => {
-    const preco = (Math.random() * 100 + 10).toFixed(2);
-    const variacao = (Math.random() * 10 - 5).toFixed(2);
-    const cor = variacao >= 0 ? 'green' : 'red';
-    const simbolo = variacao >= 0 ? '▲' : '▼';
+    // Se for cripto (ex: BTC), puxar dados reais da CoinGecko
+    if (ativo.tipo === 'cripto') {
+      fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ativo.api}&vs_currencies=brl&include_24hr_change=true`)
+        .then(response => response.json())
+        .then(data => {
+          const preco = data[ativo.api].brl.toFixed(2);
+          const variacao = data[ativo.api].brl_24h_change.toFixed(2);
+          const cor = variacao >= 0 ? 'green' : 'red';
+          const simbolo = variacao >= 0 ? '▲' : '▼';
 
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
-      <p><strong>Código:</strong> ${ativo.codigo}</p>
-      <p><strong>Tipo:</strong> ${ativo.tipo}</p>
-      <p><strong>Preço:</strong> R$ ${preco}</p>
-      <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${variacao}%</span></p>
-    `;
-    container.appendChild(card);
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
+            <p><strong>Código:</strong> ${ativo.codigo}</p>
+            <p><strong>Tipo:</strong> ${ativo.tipo}</p>
+            <p><strong>Preço:</strong> R$ ${preco}</p>
+            <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${variacao}%</span></p>
+          `;
+          container.appendChild(card);
+        });
+    } else {
+      // Para ações e fiis ainda gera preço aleatório por enquanto
+      const preco = (Math.random() * 100 + 10).toFixed(2);
+      const variacao = (Math.random() * 10 - 5).toFixed(2);
+      const cor = variacao >= 0 ? 'green' : 'red';
+      const simbolo = variacao >= 0 ? '▲' : '▼';
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
+        <p><strong>Código:</strong> ${ativo.codigo}</p>
+        <p><strong>Tipo:</strong> ${ativo.tipo}</p>
+        <p><strong>Preço:</strong> R$ ${preco}</p>
+        <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${variacao}%</span></p>
+      `;
+      container.appendChild(card);
+    }
   });
 }
 
