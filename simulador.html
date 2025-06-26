@@ -20,20 +20,30 @@
     </nav>
   </header>
 
-  <main style="padding: 2rem; max-width: 800px; margin: auto;">
-    <h1 style="color:#0b515a; margin-bottom: 1rem;">Simulador de Investimentos</h1>
+  <main class="main-container">
+    <h1 class="titulo">Simulador de Investimentos</h1>
     <form id="formSimulador" class="formulario">
-      <label>Investimento Inicial (R$): <input type="number" id="inicial" value="1000" /></label>
-      <label>Aporte Mensal (R$): <input type="number" id="aporte" value="200" /></label>
-      <label>Taxa de Juros (% ao mês): <input type="number" id="taxa" value="0.7" step="0.1" /></label>
-      <label>Prazo (meses): <input type="number" id="periodo" value="12" /></label>
-      <label>Inflação mensal (%): <input type="number" id="inflacao" value="0.4" step="0.1" /></label>
+      <label for="inicial">Investimento Inicial (R$): 
+        <input type="number" id="inicial" value="1000" step="0.01" />
+      </label>
+      <label for="aporte">Aporte Mensal (R$): 
+        <input type="number" id="aporte" value="200" step="0.01" />
+      </label>
+      <label for="taxa">Taxa de Juros (% ao mês): 
+        <input type="number" id="taxa" value="0.7" step="0.1" />
+      </label>
+      <label for="periodo">Prazo (meses): 
+        <input type="number" id="periodo" value="12" />
+      </label>
+      <label for="inflacao">Inflação mensal (%): 
+        <input type="number" id="inflacao" value="0.4" step="0.1" />
+      </label>
       <button type="submit" class="btn">Simular</button>
     </form>
 
-    <canvas id="graficoSimulador" height="100" style="margin: 2rem 0;"></canvas>
+    <canvas id="graficoSimulador" height="100" class="grafico"></canvas>
 
-    <h2 style="color:#0b515a;">Resultado mês a mês</h2>
+    <h2 class="titulo">Resultado mês a mês</h2>
     <div class="tabela-scroll">
       <table class="tabela-resultado">
         <thead>
@@ -52,6 +62,8 @@
   <footer>
     <p>© 2025 Easy Finance — por Bruno Lemos</p>
   </footer>
-  <script src="simulador.js"></script>
+
+  <!-- Adicionado 'defer' para garantir que o JS seja executado após o DOM -->
+  <script src="simulador.js" defer></script>
 </body>
 </html>
