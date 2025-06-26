@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saldoSem *= (1 + taxa);
 
       // Corrige o saldo com inflação acumulada
-      const fatorInflacao = Math.pow(1 + inflacao, i);
+      const fatorInflacao = Math.pow(1 - inflacao, i);
       const saldoCorrigido = saldoCom / fatorInflacao;
 
       dadosCom.push(saldoCom);
