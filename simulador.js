@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Captura e normaliza os dados
     const inicial = parseFloat(document.getElementById('inicial').value) || 0;
     const aporte = parseFloat(document.getElementById('aporte').value) || 0;
     const taxa = (parseFloat(document.getElementById('taxa').value) || 0) / 100;
@@ -16,41 +15,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let saldoCom = inicial;
     let saldoSem = inicial;
-    let saldoInflacao = inicial;
 
-    const dadosCom = [], dadosSem = [], dadosInflacao = [];
+    const dadosCom = [], dadosSem = [], dadosReais = [];
 
     tabela.innerHTML = '';
 
-    // Formato de moeda brasileira
     const formatar = valor => new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     }).format(valor);
 
-    // Simulação mês a mês
     for (let i = 1; i <= periodo; i++) {
       saldoCom = (saldoCom + aporte) * (1 + taxa);
       saldoSem *= (1 + taxa);
-      saldoInflacao *= (1 + inflacao);
+
+      // Corrige o saldo com inflação acumulada
+      const fatorInflacao = Math.pow(1 + inflacao, i);
+      const saldoCorrigido = saldoCom / fatorInflacao;
 
       dadosCom.push(saldoCom);
       dadosSem.push(saldoSem);
-      dadosInflacao.push(saldoInflacao);
+      dadosReais.push(saldoCorrigido);
 
       tabela.innerHTML += `
         <tr>
           <td>${i}</td>
           <td>${formatar(saldoCom)}</td>
           <td>${formatar(saldoSem)}</td>
-          <td>${formatar(saldoInflacao)}</td>
+          <td>${formatar(saldoCorrigido)}</td>
         </tr>`;
     }
 
-    gerarGrafico(dadosCom, dadosSem, dadosInflacao);
+    gerarGrafico(dadosCom, dadosSem, dadosReais);
   });
 
-  function gerarGrafico(dadosCom, dadosSem, dadosInflacao) {
+  function gerarGrafico(dadosCom, dadosSem, dadosReais) {
     const ctx = graficoCanvas.getContext('2d');
     if (grafico) grafico.destroy();
 
@@ -60,26 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
         labels: dadosCom.map((_, i) => `Mês ${i + 1}`),
         datasets: [
           {
-            label: 'Com Aportes',
+            label: 'Com Aportes (nominal)',
             data: dadosCom,
             borderColor: 'green',
-            backgroundColor: 'transparent',
-            tension: 0.3
+            tension: 0.3,
+            fill: false
           },
           {
-            label: 'Sem Aportes',
+            label: 'Sem Aportes (nominal)',
             data: dadosSem,
             borderColor: 'blue',
-            backgroundColor: 'transparent',
-            tension: 0.3
+            tension: 0.3,
+            fill: false
           },
           {
-            label: 'Inflação',
-            data: dadosInflacao,
+            label: 'Com Aportes (valor real)',
+            data: dadosReais,
             borderColor: 'orange',
-            backgroundColor: 'transparent',
             borderDash: [5, 5],
-            tension: 0.3
+            tension: 0.3,
+            fill: false
           }
         ]
       },
@@ -90,17 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
             position: 'bottom'
           }
         },
-        interaction: {
-          mode: 'index',
-          intersect: false
-        },
         scales: {
           y: {
             beginAtZero: true,
             ticks: {
-              callback: function(value) {
-                return `R$ ${value.toFixed(0)}`;
-              }
+              callback: value => `R$ ${value.toFixed(0)}`
             }
           }
         }
