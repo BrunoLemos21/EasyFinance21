@@ -1,83 +1,110 @@
-document.getElementById('formSimulador').addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  const inicial = parseFloat(document.getElementById('inicial').value) || 0;
-  const aporte = parseFloat(document.getElementById('aporte').value) || 0;
-  const taxa = parseFloat(document.getElementById('taxa').value) / 100;
-  const periodo = parseInt(document.getElementById('periodo').value);
-  const inflacao = parseFloat(document.getElementById('inflacao').value) / 100;
-
-  let saldoCom = inicial;
-  let saldoSem = inicial;
-  let saldoInflacao = inicial;
-  let dadosCom = [], dadosSem = [], dadosInflacao = [];
-
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('formSimulador');
   const tabela = document.getElementById('tabelaResultado');
-  tabela.innerHTML = '';
+  const graficoCanvas = document.getElementById('graficoSimulador');
+  let grafico;
 
-  for (let i = 1; i <= periodo; i++) {
-    saldoCom = (saldoCom + aporte) * (1 + taxa);
-    saldoSem = saldoSem * (1 + taxa);
-    saldoInflacao = saldoInflacao * (1 + inflacao);
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-    dadosCom.push(saldoCom.toFixed(2));
-    dadosSem.push(saldoSem.toFixed(2));
-    dadosInflacao.push(saldoInflacao.toFixed(2));
+    // Captura e normaliza os dados
+    const inicial = parseFloat(document.getElementById('inicial').value) || 0;
+    const aporte = parseFloat(document.getElementById('aporte').value) || 0;
+    const taxa = (parseFloat(document.getElementById('taxa').value) || 0) / 100;
+    const periodo = parseInt(document.getElementById('periodo').value) || 0;
+    const inflacao = (parseFloat(document.getElementById('inflacao').value) || 0) / 100;
 
-    const linha = `
-      <tr>
-        <td>${i}</td>
-        <td>R$ ${saldoCom.toFixed(2)}</td>
-        <td>R$ ${saldoSem.toFixed(2)}</td>
-        <td>R$ ${saldoInflacao.toFixed(2)}</td>
-      </tr>`;
-    tabela.innerHTML += linha;
-  }
+    let saldoCom = inicial;
+    let saldoSem = inicial;
+    let saldoInflacao = inicial;
 
-  gerarGrafico(dadosCom, dadosSem, dadosInflacao);
-});
+    const dadosCom = [], dadosSem = [], dadosInflacao = [];
 
-let grafico;
-function gerarGrafico(dadosCom, dadosSem, dadosInflacao) {
-  const ctx = document.getElementById('graficoSimulador').getContext('2d');
-  if (grafico) grafico.destroy();
+    tabela.innerHTML = '';
 
-  grafico = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: dadosCom.map((_, i) => `Mês ${i + 1}`),
-      datasets: [
-        {
-          label: 'Com Aportes',
-          data: dadosCom,
-          borderColor: 'green',
-          tension: 0.3,
-          fill: false
+    // Formato de moeda brasileira
+    const formatar = valor => new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(valor);
+
+    // Simulação mês a mês
+    for (let i = 1; i <= periodo; i++) {
+      saldoCom = (saldoCom + aporte) * (1 + taxa);
+      saldoSem *= (1 + taxa);
+      saldoInflacao *= (1 + inflacao);
+
+      dadosCom.push(saldoCom);
+      dadosSem.push(saldoSem);
+      dadosInflacao.push(saldoInflacao);
+
+      tabela.innerHTML += `
+        <tr>
+          <td>${i}</td>
+          <td>${formatar(saldoCom)}</td>
+          <td>${formatar(saldoSem)}</td>
+          <td>${formatar(saldoInflacao)}</td>
+        </tr>`;
+    }
+
+    gerarGrafico(dadosCom, dadosSem, dadosInflacao);
+  });
+
+  function gerarGrafico(dadosCom, dadosSem, dadosInflacao) {
+    const ctx = graficoCanvas.getContext('2d');
+    if (grafico) grafico.destroy();
+
+    grafico = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dadosCom.map((_, i) => `Mês ${i + 1}`),
+        datasets: [
+          {
+            label: 'Com Aportes',
+            data: dadosCom,
+            borderColor: 'green',
+            backgroundColor: 'transparent',
+            tension: 0.3
+          },
+          {
+            label: 'Sem Aportes',
+            data: dadosSem,
+            borderColor: 'blue',
+            backgroundColor: 'transparent',
+            tension: 0.3
+          },
+          {
+            label: 'Inflação',
+            data: dadosInflacao,
+            borderColor: 'orange',
+            backgroundColor: 'transparent',
+            borderDash: [5, 5],
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
         },
-        {
-          label: 'Sem Aportes',
-          data: dadosSem,
-          borderColor: 'blue',
-          tension: 0.3,
-          fill: false
+        interaction: {
+          mode: 'index',
+          intersect: false
         },
-        {
-          label: 'Inflação',
-          data: dadosInflacao,
-          borderColor: 'orange',
-          borderDash: [5, 5],
-          tension: 0.3,
-          fill: false
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom'
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return `R$ ${value.toFixed(0)}`;
+              }
+            }
+          }
         }
       }
-    }
-  });
-}
+    });
+  }
+});
