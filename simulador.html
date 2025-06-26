@@ -1,74 +1,57 @@
-document.getElementById("formSimulador").addEventListener("submit", function (e) {
-  e.preventDefault();
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador - Easy Finance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <a class="navbar-brand" href="index.html">EasyFinance</a>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="simulador.html" class="ativo">Simulador</a></li>
+        <li><a href="educacao.html">Educação</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  const inicial = parseFloat(document.getElementById("inicial").value);
-  const aporte = parseFloat(document.getElementById("aporte").value);
-  const taxa = parseFloat(document.getElementById("taxa").value) / 100;
-  const meses = parseInt(document.getElementById("periodo").value);
-  const inflacao = parseFloat(document.getElementById("inflacao").value) / 100;
+  <main style="padding: 2rem; max-width: 800px; margin: auto;">
+    <h1 style="color:#0b515a; margin-bottom: 1rem;">Simulador de Investimentos</h1>
+    <form id="formSimulador" class="formulario">
+      <label>Investimento Inicial (R$): <input type="number" id="inicial" value="1000" /></label>
+      <label>Aporte Mensal (R$): <input type="number" id="aporte" value="200" /></label>
+      <label>Taxa de Juros (% ao mês): <input type="number" id="taxa" value="0.7" step="0.1" /></label>
+      <label>Prazo (meses): <input type="number" id="periodo" value="12" /></label>
+      <label>Inflação mensal (%): <input type="number" id="inflacao" value="0.4" step="0.1" /></label>
+      <button type="submit" class="btn">Simular</button>
+    </form>
 
-  let comAportes = [];
-  let semAportes = [];
-  let comAportesReal = [];
-  let semAportesReal = [];
+    <canvas id="graficoSimulador" height="100" style="margin: 2rem 0;"></canvas>
 
-  let valorComAporte = inicial;
-  let valorSemAporte = inicial;
+    <h2 style="color:#0b515a;">Resultado mês a mês</h2>
+    <div class="tabela-scroll">
+      <table class="tabela-resultado">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Com Aportes</th>
+            <th>Sem Aportes</th>
+            <th>Inflação</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaResultado"></tbody>
+      </table>
+    </div>
+  </main>
 
-  for (let i = 1; i <= meses; i++) {
-    // Juros
-    valorComAporte = (valorComAporte + aporte) * (1 + taxa);
-    valorSemAporte = valorSemAporte * (1 + taxa);
-
-    // Corrige pela inflação: valor / (1 + inflação)
-    const valorComAporteReal = valorComAporte / Math.pow(1 + inflacao, i);
-    const valorSemAporteReal = valorSemAporte / Math.pow(1 + inflacao, i);
-
-    comAportes.push(valorComAporteReal);
-    semAportes.push(valorSemAporteReal);
-  }
-
-  const tabela = document.getElementById("tabelaResultado");
-  tabela.innerHTML = "";
-  for (let i = 0; i < meses; i++) {
-    const row = `<tr>
-      <td>${i + 1}</td>
-      <td>R$ ${comAportes[i].toFixed(2)}</td>
-      <td>R$ ${semAportes[i].toFixed(2)}</td>
-      <td>${(inflacao * 100).toFixed(1)}%</td>
-    </tr>`;
-    tabela.innerHTML += row;
-  }
-
-  // Gráfico
-  const ctx = document.getElementById("graficoSimulador").getContext("2d");
-  if (window.graficoInvestimento) window.graficoInvestimento.destroy();
-  window.graficoInvestimento = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: Array.from({ length: meses }, (_, i) => `M${i + 1}`),
-      datasets: [
-        {
-          label: "Com Aportes (corrigido)",
-          data: comAportes,
-          borderColor: "#0b515a",
-          fill: false,
-        },
-        {
-          label: "Sem Aportes (corrigido)",
-          data: semAportes,
-          borderColor: "#aaa",
-          fill: false,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-});
+  <footer>
+    <p>© 2025 Easy Finance — por Bruno Lemos</p>
+  </footer>
+  <script src="simulador.js"></script>
+</body>
+</html>
