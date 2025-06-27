@@ -176,3 +176,10 @@ footer {
   padding: 1rem;
   margin-top: 3rem;
 }
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
