@@ -173,15 +173,19 @@ async function exibirAtivos() {
   const container = document.getElementById('ativos-container');
   container.innerHTML = '';
 
-  for (const ativo of ativos) {
+  const promessas = ativos.map(async (ativo) => {
     let dados = { preco: '--', variacao: '0.00' };
 
-    if (ativo.origem === 'coingecko') {
-      dados = await fetchDadosCoinGecko(ativo.codigo, ativo.vs);
-    } else if (ativo.origem === 'fiat') {
-      dados = await fetchDadosFiat(ativo.codigo);
-    } else if (ativo.origem === 'fmp') {
-      dados = await fetchDadosFMP(ativo.codigo);
+    try {
+      if (ativo.origem === 'coingecko') {
+        dados = await fetchDadosCoinGecko(ativo.codigo, ativo.vs);
+      } else if (ativo.origem === 'fiat') {
+        dados = await fetchDadosFiat(ativo.codigo);
+      } else if (ativo.origem === 'fmp') {
+        dados = await fetchDadosFMP(ativo.codigo);
+      }
+    } catch (e) {
+      console.error(`Erro ao buscar dados do ativo ${ativo.codigo}`, e);
     }
 
     const cor = parseFloat(dados.variacao) >= 0 ? 'green' : 'red';
@@ -202,9 +206,15 @@ async function exibirAtivos() {
     container.appendChild(card);
 
     if (ativo.origem !== 'fiat') {
-      await gerarGraficoSeteDias(`grafico-${ativo.codigo}`, ativo);
+      try {
+        await gerarGraficoSeteDias(`grafico-${ativo.codigo}`, ativo);
+      } catch (e) {
+        console.error(`Erro ao gerar gráfico para ${ativo.codigo}`, e);
+      }
     }
-  }
+  });
+
+  await Promise.all(promessas);
 }
 
 async function gerarGraficoSeteDias(id, ativo) {
