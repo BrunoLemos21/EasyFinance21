@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,55 +16,66 @@
         <li><a href="simulador.html" class="ativo">Simulador</a></li>
         <li><a href="educacao.html">Educação</a></li>
         <li><a href="sobre.html">Sobre</a></li>
+        <li><button id="toggle-theme" class="theme-btn">🌓</button></li>
       </ul>
     </nav>
   </header>
 
-  <main class="main-container">
+  <main class="main-container" style="padding: 2rem; max-width: 1000px; margin: auto;">
     <h1 class="titulo">Simulador de Investimentos</h1>
-    <form id="formSimulador" class="formulario">
-      <label for="inicial">Investimento Inicial (R$): 
+    <form id="formSimulador" class="formulario" style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2rem;">
+      <label>Investimento Inicial (R$):
         <input type="number" id="inicial" value="1000" step="0.01" />
       </label>
-      <label for="aporte">Aporte Mensal (R$): 
+      <label>Aporte Mensal (R$):
         <input type="number" id="aporte" value="200" step="0.01" />
       </label>
-      <label for="taxa">Taxa de Juros (% ao mês): 
+      <label>Taxa de Juros (% ao mês):
         <input type="number" id="taxa" value="0.7" step="0.1" />
       </label>
-      <label for="periodo">Prazo (meses): 
+      <label>Prazo (meses):
         <input type="number" id="periodo" value="12" />
       </label>
-      <label for="inflacao">Inflação mensal (%): 
+      <label>Inflação mensal (%):
         <input type="number" id="inflacao" value="0.4" step="0.1" />
       </label>
       <button type="submit" class="btn">Simular</button>
     </form>
 
-    <canvas id="graficoSimulador" height="100" class="grafico"></canvas>
+    <canvas id="graficoSimulador" height="100" class="grafico" style="margin-bottom: 2rem;"></canvas>
 
     <h2 class="titulo">Resultado mês a mês</h2>
-    <div class="tabela-scroll">
-      <table class="tabela-resultado">
-<thead>
-  <tr>
-    <th>Mês</th>
-    <th>Apenas Inicial (Bruto)</th>
-    <th>Inicial + Aportes (Bruto)</th>
-    <th>Apenas Inicial (Real)</th>
-    <th>Inicial + Aportes (Real)</th>
-  </tr>
-</thead>
+    <div class="tabela-scroll" style="overflow-x: auto;">
+      <table class="tabela-resultado" style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Apenas Inicial (Bruto)</th>
+            <th>Inicial + Aportes (Bruto)</th>
+            <th>Apenas Inicial (Real)</th>
+            <th>Inicial + Aportes (Real)</th>
+          </tr>
+        </thead>
         <tbody id="tabelaResultado"></tbody>
       </table>
     </div>
   </main>
 
   <footer>
-    <p>© 2025 Easy Finance — por Bruno Lemos</p>
+    <div class="footer-content">
+      <p>© 2025 Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" class="linktree-icon">🔗</a>
+    </div>
   </footer>
 
-  <!-- Adicionado 'defer' para garantir que o JS seja executado após o DOM -->
   <script src="simulador.js" defer></script>
+  <script>
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
 </body>
 </html>
