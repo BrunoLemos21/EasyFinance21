@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +15,22 @@
         <li><a href="simulador.html">Simulador</a></li>
         <li><a href="educacao.html" class="ativo">Educação</a></li>
         <li><a href="sobre.html">Sobre</a></li>
+        <li><button id="toggle-theme" class="theme-btn">🌓</button></li>
       </ul>
     </nav>
   </header>
 
   <main style="padding: 2rem; max-width: 900px; margin: auto;">
-    <h1 style="color:#0b515a">Educação Financeira</h1>
+    <h1 style="color: var(--cor-principal); margin-bottom: 1.5rem;">Educação Financeira</h1>
 
     <section class="card-conteudo">
-      <h2>📌 Meu Linktree</h2>
-      <p>Acesse todos os meus canais e conteúdos:</p>
-      <a href="https://linktr.ee/brunosblemos" target="_blank">🌐 linktr.ee/brunosblemos</a>
+      <h2>📍 Comece por Aqui</h2>
+      <ul>
+        <li><strong>O que é inflação?</strong> — É a perda do poder de compra. Quanto maior a inflação, menos você consegue comprar com o mesmo dinheiro.</li>
+        <li><strong>O que é a Selic?</strong> — É a taxa básica de juros da economia. Quando está alta, rende mais deixar dinheiro em renda fixa.</li>
+        <li><strong>Liquidez</strong> — Quanto mais rápido você consegue resgatar seu investimento, maior a liquidez.</li>
+        <li><strong>Prazo de vencimento</strong> — É quanto tempo você vai deixar o dinheiro investido. Alguns investimentos só valem a pena se esperados até o fim.</li>
+      </ul>
     </section>
 
     <section class="card-conteudo">
@@ -41,9 +46,9 @@
     <section class="card-conteudo">
       <h2>🎙️ Educadores Recomendados</h2>
       <ul>
-        <li><strong>Thiago Nigro</strong> — Autor de \"Do Mil ao Milhão\". Disciplina, aportes e conhecimento. <a href="https://www.youtube.com/@primorico" target="_blank">YouTube</a></li>
-        <li><strong>Bruno Perini</strong> — Criador do “Você Mais Rico”. Filosofia, independência e lucidez. <a href="https://youtube.com/@brunoperini" target="_blank">YouTube</a></li>
-        <li><strong>Gustavo Cerbasi</strong> — Autor de \"Casais Inteligentes\". Especialista em finanças familiares. <a href="https://www.youtube.com/@GustavocerbasiBr" target="_blank">YouTube</a></li>
+        <li><strong>Thiago Nigro</strong> — Autor de "Do Mil ao Milhão". <a href="https://www.youtube.com/@primorico" target="_blank">YouTube</a></li>
+        <li><strong>Bruno Perini</strong> — Criador do “Você Mais Rico”. <a href="https://youtube.com/@brunoperini" target="_blank">YouTube</a></li>
+        <li><strong>Gustavo Cerbasi</strong> — Especialista em finanças familiares. <a href="https://www.youtube.com/@GustavocerbasiBr" target="_blank">YouTube</a></li>
       </ul>
     </section>
 
@@ -55,10 +60,29 @@
         <li><strong>O Homem Mais Rico da Babilônia</strong> – George S. Clason</li>
       </ul>
     </section>
+
+    <section class="card-conteudo">
+      <h2>🔗 Meu Linktree</h2>
+      <p>Acesse todos os meus canais e conteúdos:</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank">🌐 linktr.ee/brunosblemos</a>
+    </section>
   </main>
 
   <footer>
-    <p>© 2025 Easy Finance — por Bruno Lemos</p>
+    <div class="footer-content">
+      <p>© 2025 Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" class="linktree-icon">🔗</a>
+    </div>
   </footer>
+
+  <script>
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
 </body>
 </html>
+
