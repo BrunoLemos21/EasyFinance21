@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Easy Finance</title>
   <link rel="stylesheet" href="style.css" />
+  <script>
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  </script>
 </head>
 <body>
   <header class="navbar">
@@ -15,6 +18,9 @@
         <li><a href="simulador.html">Simulador</a></li>
         <li><a href="educacao.html">Educação</a></li>
         <li><a href="sobre.html">Sobre</a></li>
+        <li>
+          <button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button>
+        </li>
       </ul>
     </nav>
   </header>
@@ -32,6 +38,11 @@
       <div id="ativos-container" class="grid"></div>
     </section>
 
+    <section class="noticias">
+      <h2>📰 Notícias Recentes</h2>
+      <ul id="feedNoticias" class="rss-feed"></ul>
+    </section>
+
     <section class="sobre">
       <h2>Sobre o Projeto</h2>
       <p>O Easy Finance é uma plataforma simples e intuitiva para quem quer entender melhor seus investimentos e finanças pessoais.</p>
@@ -39,9 +50,46 @@
   </main>
 
   <footer>
-    <p>© 2025 Easy Finance — por Bruno Lemos</p>
+    <div class="footer-content">
+      <p>© 2025 Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" class="linktree-icon" title="Meu Linktree">🔗</a>
+    </div>
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    // RSS feed - exemplo com InfoMoney
+    async function carregarRSS() {
+      const proxy = 'https://api.allorigins.win/get?url=';
+      const feedUrl = encodeURIComponent('https://www.infomoney.com.br/feed/');
+      try {
+        const res = await fetch(`${proxy}${feedUrl}`);
+        const data = await res.json();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(data.contents, 'text/xml');
+        const items = xml.querySelectorAll('item');
+        const lista = document.getElementById('feedNoticias');
+        items.forEach((item, i) => {
+          if (i < 5) {
+            const titulo = item.querySelector('title').textContent;
+            const link = item.querySelector('link').textContent;
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${link}" target="_blank">${titulo}</a>`;
+            lista.appendChild(li);
+          }
+        });
+      } catch (e) {
+        document.getElementById('feedNoticias').innerHTML = '<li>Erro ao carregar notícias.</li>';
+      }
+    }
+    carregarRSS();
+  </script>
 </body>
 </html>
