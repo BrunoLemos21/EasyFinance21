@@ -16,23 +16,17 @@ document.getElementById('formSimulador').addEventListener('submit', function (e)
   let montanteComAportes = inicial;
 
   for (let i = 1; i <= periodo; i++) {
-    // Apenas inicial (sem aportes)
     montanteInicial *= (1 + taxa);
     apenasInicial.push(montanteInicial);
 
-    // Com aportes mensais
     montanteComAportes = (montanteComAportes + aporte) * (1 + taxa);
     comAportes.push(montanteComAportes);
 
-    // Inflação acumulada até o mês atual
     const inflacaoAcumulada = Math.pow(1 + inflacao, i);
-
-    // Ajuste para valor real
     apenasInicialReal.push(montanteInicial / inflacaoAcumulada);
     comAportesReal.push(montanteComAportes / inflacaoAcumulada);
   }
 
-  // Tabela
   const tabela = document.getElementById('tabelaResultado');
   tabela.innerHTML = "";
 
@@ -48,7 +42,6 @@ document.getElementById('formSimulador').addEventListener('submit', function (e)
     tabela.appendChild(linha);
   }
 
-  // Gráfico
   const ctx = document.getElementById('graficoSimulador').getContext('2d');
   if (window.grafico) window.grafico.destroy();
 
@@ -91,6 +84,14 @@ document.getElementById('formSimulador').addEventListener('submit', function (e)
         legend: { position: 'bottom' },
         title: { display: true, text: 'Simulação de Investimento' }
       },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: value => 'R$ ' + value.toFixed(2)
+          }
+        }
+      }
     },
   });
 });
