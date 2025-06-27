@@ -86,11 +86,14 @@ async function exibirAtivos() {
     const cor = parseFloat(dados.variacao) >= 0 ? 'green' : 'red';
     const simbolo = parseFloat(dados.variacao) >= 0 ? '▲' : '▼';
 
+    // Remove ".SA" do código para exibir limpo
+    const codigoExibicao = ativo.codigo.replace('.SA', '');
+
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
-      <p><strong>Código:</strong> ${ativo.codigo.replace('.SA', '')}</p>
+      <p><strong>Código:</strong> ${codigoExibicao}</p>
       <p><strong>Preço:</strong> ${ativo.tipo === 'fiat' ? '$' : 'R$'} ${dados.preco}</p>
       <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${dados.variacao}%</span></p>
     `;
