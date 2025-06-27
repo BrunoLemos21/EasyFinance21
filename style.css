@@ -89,25 +89,6 @@ body {
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-/* Gráfico dentro do card */
-.card canvas {
-  width: 100% !important;
-  max-height: 100px;
-  transition: max-height 0.3s ease-in-out;
-}
-
-.card:hover canvas {
-  max-height: 200px;
 }
 
 /* Filtros */
