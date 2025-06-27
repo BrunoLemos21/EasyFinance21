@@ -97,11 +97,11 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
-/* Texto última atualização */
+/* Última atualização */
 .ultima-atualizacao {
   font-size: 0.85rem;
-  color: #555;
-  margin-top: 0.3rem;
+  color: #666;
+  margin-top: 0.5rem;
   font-style: italic;
 }
 
@@ -118,69 +118,4 @@ body {
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.filtros button:hover {
-  background-color: #ccc;
-}
-
-.filtros .ativo {
-  background-color: #0b515a;
-  color: white;
-}
-
-/* Formulário */
-.formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.formulario label {
-  display: flex;
-  flex-direction: column;
-  font-weight: bold;
-}
-
-/* Tabela Resultado */
-.tabela-scroll {
-  overflow-x: auto;
-  margin-top: 1rem;
-}
-
-.tabela-resultado {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.tabela-resultado th,
-.tabela-resultado td {
-  padding: 0.75rem 1rem;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-.tabela-resultado th {
-  background-color: #f0f0f0;
-}
-
-/* Cartões de conteúdo */
-.card-conteudo {
-  background: #ffffff;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* Rodapé */
-footer {
-  background-color: rgba(11, 81, 90, 0.996);
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 3rem;
-}
+  cur
