@@ -34,23 +34,8 @@ async function fetchDadosFMP(codigo) {
       variacao: data.changesPercentage ? data.changesPercentage.toFixed(2) : '0.00'
     };
   } catch (e) {
+    console.error(`Erro fetch FMP para ${codigo}`, e);
     return { preco: '--', variacao: '0.00' };
-  }
-}
-
-async function fetchHistoricoFMP(codigo) {
-  try {
-    const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${codigo}?timeseries=7&apikey=${API_KEY_FMP}`;
-    const res = await fetch(url);
-    const json = await res.json();
-    if (!json.historical) return null;
-    const historico = json.historical.reverse();
-    return {
-      labels: historico.map(d => d.date),
-      valores: historico.map(d => d.close)
-    };
-  } catch (e) {
-    return null;
   }
 }
 
@@ -64,21 +49,8 @@ async function fetchDadosCoinGecko(id, vs) {
       variacao: json[id][`${vs}_24h_change`].toFixed(2)
     };
   } catch (e) {
+    console.error(`Erro fetch CoinGecko para ${id}`, e);
     return { preco: '--', variacao: '0.00' };
-  }
-}
-
-async function fetchHistoricoCoinGecko(id) {
-  try {
-    const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7&interval=daily`;
-    const res = await fetch(url);
-    const json = await res.json();
-    return {
-      labels: json.prices.map(p => new Date(p[0]).toISOString().slice(0, 10)),
-      valores: json.prices.map(p => p[1].toFixed(2))
-    };
-  } catch (e) {
-    return null;
   }
 }
 
@@ -91,6 +63,7 @@ async function fetchDadosFiat(code) {
       variacao: 0.00
     };
   } catch (e) {
+    console.error(`Erro fetch Fiat para ${code}`, e);
     return { preco: '--', variacao: '0.00' };
   }
 }
@@ -112,61 +85,17 @@ async function exibirAtivos() {
 
     const cor = parseFloat(dados.variacao) >= 0 ? 'green' : 'red';
     const simbolo = parseFloat(dados.variacao) >= 0 ? '▲' : '▼';
-    const codigoDisplay = ativo.codigo.replace('.SA', '');
 
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
-      <p><strong>Código:</strong> ${codigoDisplay}</p>
+      <p><strong>Código:</strong> ${ativo.codigo.replace('.SA', '')}</p>
       <p><strong>Preço:</strong> ${ativo.tipo === 'fiat' ? '$' : 'R$'} ${dados.preco}</p>
       <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${dados.variacao}%</span></p>
-      <canvas id="grafico-${ativo.codigo}" height="40"></canvas>
     `;
     container.appendChild(card);
-
-    await gerarGraficoSeteDias(`grafico-${ativo.codigo}`, ativo);
   }
-}
-
-async function gerarGraficoSeteDias(id, ativo) {
-  let dadosHistorico = null;
-
-  if (ativo.origem === 'fmp') {
-    dadosHistorico = await fetchHistoricoFMP(ativo.codigo);
-  } else if (ativo.origem === 'coingecko') {
-    dadosHistorico = await fetchHistoricoCoinGecko(ativo.codigo);
-  } else {
-    return;
-  }
-
-  if (!dadosHistorico) return;
-
-  const ctx = document.getElementById(id).getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: dadosHistorico.labels,
-      datasets: [{
-        label: 'Preço (últimos 7 dias)',
-        data: dadosHistorico.valores,
-        borderColor: '#0B515A',
-        backgroundColor: 'rgba(11, 81, 90, 0.2)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 3
-      }]
-    },
-    options: {
-      scales: {
-        y: { beginAtZero: false },
-        x: { ticks: { maxRotation: 45, minRotation: 45 } }
-      },
-      plugins: {
-        legend: { display: true }
-      }
-    }
-  });
 }
 
 exibirAtivos();
