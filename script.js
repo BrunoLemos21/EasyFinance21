@@ -34,7 +34,6 @@ async function fetchDadosFMP(codigo) {
       variacao: data.changesPercentage ? data.changesPercentage.toFixed(2) : '0.00'
     };
   } catch (e) {
-    console.error(`Erro fetch FMP para ${codigo}`, e);
     return { preco: '--', variacao: '0.00' };
   }
 }
@@ -45,16 +44,12 @@ async function fetchHistoricoFMP(codigo) {
     const res = await fetch(url);
     const json = await res.json();
     if (!json.historical) return null;
-
-    // Ordenar do mais antigo para o mais recente
     const historico = json.historical.reverse();
-
     return {
       labels: historico.map(d => d.date),
       valores: historico.map(d => d.close)
     };
   } catch (e) {
-    console.error('Erro fetch histórico FMP:', e);
     return null;
   }
 }
@@ -69,7 +64,6 @@ async function fetchDadosCoinGecko(id, vs) {
       variacao: json[id][`${vs}_24h_change`].toFixed(2)
     };
   } catch (e) {
-    console.error(`Erro fetch CoinGecko para ${id}`, e);
     return { preco: '--', variacao: '0.00' };
   }
 }
@@ -79,16 +73,11 @@ async function fetchHistoricoCoinGecko(id) {
     const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7&interval=daily`;
     const res = await fetch(url);
     const json = await res.json();
-
     return {
-      labels: json.prices.map(p => {
-        const d = new Date(p[0]);
-        return d.toISOString().slice(0, 10);
-      }),
+      labels: json.prices.map(p => new Date(p[0]).toISOString().slice(0, 10)),
       valores: json.prices.map(p => p[1].toFixed(2))
     };
   } catch (e) {
-    console.error('Erro fetch histórico CoinGecko:', e);
     return null;
   }
 }
@@ -102,7 +91,6 @@ async function fetchDadosFiat(code) {
       variacao: 0.00
     };
   } catch (e) {
-    console.error(`Erro fetch Fiat para ${code}`, e);
     return { preco: '--', variacao: '0.00' };
   }
 }
@@ -124,19 +112,19 @@ async function exibirAtivos() {
 
     const cor = parseFloat(dados.variacao) >= 0 ? 'green' : 'red';
     const simbolo = parseFloat(dados.variacao) >= 0 ? '▲' : '▼';
+    const codigoDisplay = ativo.codigo.replace('.SA', '');
 
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
-      <p><strong>Código:</strong> ${ativo.codigo}</p>
+      <p><strong>Código:</strong> ${codigoDisplay}</p>
       <p><strong>Preço:</strong> ${ativo.tipo === 'fiat' ? '$' : 'R$'} ${dados.preco}</p>
       <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${dados.variacao}%</span></p>
-      <canvas id="grafico-${ativo.codigo}" height="100"></canvas>
+      <canvas id="grafico-${ativo.codigo}" height="40"></canvas>
     `;
     container.appendChild(card);
 
-    // Gera o gráfico dos últimos 7 dias
     await gerarGraficoSeteDias(`grafico-${ativo.codigo}`, ativo);
   }
 }
@@ -149,7 +137,6 @@ async function gerarGraficoSeteDias(id, ativo) {
   } else if (ativo.origem === 'coingecko') {
     dadosHistorico = await fetchHistoricoCoinGecko(ativo.codigo);
   } else {
-    // Para fiat, não tem histórico — pula gráfico
     return;
   }
 
