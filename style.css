@@ -97,6 +97,14 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
+/* Texto última atualização */
+.ultima-atualizacao {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
 /* Filtros */
 .filtros {
   display: flex;
@@ -175,11 +183,4 @@ footer {
   text-align: center;
   padding: 1rem;
   margin-top: 3rem;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
 }
