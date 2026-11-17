@@ -1,4 +1,25 @@
-Easy Finance const icones = {
+const ativos = [
+  { codigo: 'bitcoin', nome: 'Bitcoin/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'ethereum', nome: 'Ethereum/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
+  { codigo: 'BRL', nome: 'BRL/USD', tipo: 'fiat', origem: 'fiat' },
+  { codigo: 'EUR', nome: 'EUR/USD', tipo: 'fiat', origem: 'fiat' },
+  { codigo: 'BBAS3.SA', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'SOJA3.SA', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'CASH3.SA', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'CMIG4.SA', nome: 'Cemig (CMIG4)', tipo: 'acao', origem: 'fmp' },
+  { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'XPML11.SA', nome: 'XPML11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'RZTR11.SA', nome: 'RZTR11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fii', origem: 'fmp' },
+  { codigo: 'BTHF11.SA', nome: 'BTHF11', tipo: 'fii', origem: 'fmp' }
+];
+
+const icones = {
+  'cripto': '💰',
+  'fiat': '💱',
+  'acao': '📈',
+  'fii': '🏢'
+};
 
 const API_KEY_FMP = '2jQp09ts8rYRQfpJRSMbl2rYWe3cmrNj';
 
@@ -77,7 +98,7 @@ async function fetchHistoricoFMP(codigo) {
   }
 }
 
-@@ -98,99 +44,47 @@ async function fetchDadosCoinGecko(id, vs) {
+@@ -98,99 +44,47 @@
     const url = `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${vs}&include_24hr_change=true`;
     const res = await fetch(url);
     const json = await res.json();
@@ -193,7 +214,7 @@ async function exibirAtivos() {
     const codigoExibicao = ativo.codigo.replace('.SA', '');
 
     const card = document.createElement('div');
-@@ -200,61 +94,9 @@ async function exibirAtivos() {
+@@ -200,61 +94,9 @@
       <p><strong>Código:</strong> ${codigoExibicao}</p>
       <p><strong>Preço:</strong> ${ativo.tipo === 'fiat' ? '$' : 'R$'} ${dados.preco}</p>
       <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${dados.variacao}%</span></p>
