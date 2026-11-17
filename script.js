@@ -1,17 +1,17 @@
 const ativos = [
-  { codigo: 'bitcoin', nome: 'Bitcoin/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
-  { codigo: 'ethereum', nome: 'Ethereum/USD', tipo: 'cripto', origem: 'coingecko', vs: 'usd' },
-  { codigo: 'BRL', nome: 'BRL/USD', tipo: 'fiat', origem: 'fiat' },
-  { codigo: 'EUR', nome: 'EUR/USD', tipo: 'fiat', origem: 'fiat' },
-  { codigo: 'BBAS3.SA', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'fmp' },
-  { codigo: 'SOJA3.SA', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'fmp' },
-  { codigo: 'CASH3.SA', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'fmp' },
-  { codigo: 'CMIG4.SA', nome: 'Cemig (CMIG4)', tipo: 'acao', origem: 'fmp' },
-  { codigo: 'MXRF11.SA', nome: 'MXRF11', tipo: 'fii', origem: 'fmp' },
-  { codigo: 'XPML11.SA', nome: 'XPML11', tipo: 'fii', origem: 'fmp' },
-  { codigo: 'RZTR11.SA', nome: 'RZTR11', tipo: 'fii', origem: 'fmp' },
-  { codigo: 'HCTR11.SA', nome: 'HCTR11', tipo: 'fii', origem: 'fmp' },
-  { codigo: 'BTHF11.SA', nome: 'BTHF11', tipo: 'fii', origem: 'fmp' }
+  { codigo: 'BTC-USD', nome: 'Bitcoin/USD', tipo: 'cripto', origem: 'awesome' },
+  { codigo: 'ETH-USD', nome: 'Ethereum/USD', tipo: 'cripto', origem: 'awesome' },
+  { codigo: 'USD-BRL', nome: 'Dólar / Real', tipo: 'fiat', origem: 'awesome' },
+  { codigo: 'EUR-BRL', nome: 'Euro / Real', tipo: 'fiat', origem: 'awesome' },
+  { codigo: 'BBAS3', nome: 'Banco do Brasil (BBAS3)', tipo: 'acao', origem: 'brapi' },
+  { codigo: 'SOJA3', nome: 'Boa Safra (SOJA3)', tipo: 'acao', origem: 'brapi' },
+  { codigo: 'CASH3', nome: 'Meliuz (CASH3)', tipo: 'acao', origem: 'brapi' },
+  { codigo: 'CMIG4', nome: 'Cemig (CMIG4)', tipo: 'acao', origem: 'brapi' },
+  { codigo: 'MXRF11', nome: 'MXRF11', tipo: 'fii', origem: 'brapi' },
+  { codigo: 'XPML11', nome: 'XPML11', tipo: 'fii', origem: 'brapi' },
+  { codigo: 'RZTR11', nome: 'RZTR11', tipo: 'fii', origem: 'brapi' },
+  { codigo: 'HCTR11', nome: 'HCTR11', tipo: 'fii', origem: 'brapi' },
+  { codigo: 'BTHF11', nome: 'BTHF11', tipo: 'fii', origem: 'brapi' }
 ];
 
 const icones = {
@@ -21,49 +21,40 @@ const icones = {
   'fii': '🏢'
 };
 
-const API_KEY_FMP = '2jQp09ts8rYRQfpJRSMbl2rYWe3cmrNj';
-
-async function fetchDadosFMP(codigo) {
+// Busca dados de Cripto e Moedas via AwesomeAPI (Gratuita e sem chave)
+async function fetchDadosAwesome(par) {
   try {
-    const url = `https://financialmodelingprep.com/api/v3/quote/${codigo}?apikey=${API_KEY_FMP}`;
-    const res = await fetch(url);
+    // Exemplo: BTC-USD ou USD-BRL
+    const res = await fetch(`https://economia.awesomeapi.com.br/json/last/${par}`);
     const json = await res.json();
-    const data = json[0] || {};
+    const chave = par.replace('-', '');
+    const data = json[chave];
+    
+    if (!data) return { preco: '--', variacao: '0.00' };
+
     return {
-      preco: data.price ? data.price.toFixed(2) : '--',
-      variacao: data.changesPercentage ? data.changesPercentage.toFixed(2) : '0.00'
+      preco: parseFloat(data.bid).toFixed(2),
+      variacao: parseFloat(data.pctChange).toFixed(2)
     };
   } catch (e) {
-    console.error(`Erro fetch FMP para ${codigo}`, e);
+    console.error(`Erro AwesomeAPI para ${par}`, e);
     return { preco: '--', variacao: '0.00' };
   }
 }
 
-async function fetchDadosCoinGecko(id, vs) {
+// Busca dados de Ações e FIIs via Brapi (Gratuita para o mercado brasileiro)
+async function fetchDadosBrapi(ticker) {
   try {
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${vs}&include_24hr_change=true`;
-    const res = await fetch(url);
+    const res = await fetch(`https://brapi.dev/api/quote/${ticker}`);
     const json = await res.json();
-    return {
-      preco: json[id][vs].toFixed(2),
-      variacao: json[id][`${vs}_24h_change`].toFixed(2)
-    };
-  } catch (e) {
-    console.error(`Erro fetch CoinGecko para ${id}`, e);
-    return { preco: '--', variacao: '0.00' };
-  }
-}
+    const data = json.results && json.results[0] ? json.results[0] : {};
 
-async function fetchDadosFiat(code) {
-  try {
-    const res = await fetch(`https://api.exchangerate.host/convert?from=USD&to=${code}`);
-    const json = await res.json();
     return {
-      preco: json.result?.toFixed(4) || '--',
-      variacao: 0.00
+      preco: data.regularMarketPrice ? data.regularMarketPrice.toFixed(2) : '--',
+      variacao: data.regularMarketChangePercent ? data.regularMarketChangePercent.toFixed(2) : '0.00'
     };
   } catch (e) {
-    console.error(`Erro fetch Fiat para ${code}`, e);
+    console.error(`Erro Brapi para ${ticker}`, e);
     return { preco: '--', variacao: '0.00' };
   }
 }
@@ -75,29 +66,30 @@ async function exibirAtivos() {
   for (const ativo of ativos) {
     let dados = { preco: '--', variacao: '0.00' };
 
-    if (ativo.origem === 'coingecko') {
-      dados = await fetchDadosCoinGecko(ativo.codigo, ativo.vs);
-    } else if (ativo.origem === 'fiat') {
-      dados = await fetchDadosFiat(ativo.codigo);
-    } else if (ativo.origem === 'fmp') {
-      dados = await fetchDadosFMP(ativo.codigo);
+    if (ativo.origem === 'awesome') {
+      dados = await fetchDadosAwesome(ativo.codigo);
+    } else if (ativo.origem === 'brapi') {
+      dados = await fetchDadosBrapi(ativo.codigo);
     }
 
-    const cor = parseFloat(dados.variacao) >= 0 ? 'green' : 'red';
-    const simbolo = parseFloat(dados.variacao) >= 0 ? '▲' : '▼';
-    const codigoExibicao = ativo.codigo.replace('.SA', '');
+    const variacaoNum = parseFloat(dados.variacao) || 0;
+    const cor = variacaoNum >= 0 ? 'green' : 'red';
+    const simbolo = variacaoNum >= 0 ? '▲' : '▼';
+    const codigoExibicao = ativo.codigo.replace('-USD', '').replace('-BRL', '');
 
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <h3>${icones[ativo.tipo] || ''} ${ativo.nome}</h3>
       <p><strong>Código:</strong> ${codigoExibicao}</p>
-      <p><strong>Preço:</strong> ${ativo.tipo === 'fiat' ? '$' : 'R$'} ${dados.preco}</p>
+      <p><strong>Preço:</strong> R$ ${dados.preco}</p>
       <p><strong>Variação:</strong> <span style="color:${cor}">${simbolo} ${dados.variacao}%</span></p>
     `;
     container.appendChild(card);
   }
 }
 
+// Executa ao carregar a página
 exibirAtivos();
+// Atualiza a cada 2 minutos
 setInterval(exibirAtivos, 120000);
