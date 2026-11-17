@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carteira fictícia - Easy Finance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="tema.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <a class="navbar-brand" href="index.html">EasyFinance</a>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="simulador.html">Simulador</a></li>
+        <li><a href="comparar.html">Comparar</a></li>
+        <li><a href="carteira.html" class="ativo">Carteira</a></li>
+        <li><a href="educacao.html">Educação</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="pagina">
+    <h1>Carteira fictícia</h1>
+    <p class="nota" style="margin-bottom:1rem">
+      Você começa com R$ 10.000,00 de mentira. Compre e venda ativos com os preços reais do momento e veja se acertaria.
+      Nada aqui usa dinheiro de verdade, e tudo fica salvo só no seu navegador.
+    </p>
+
+    <div class="resumo" id="resumo"></div>
+
+    <section class="card-conteudo">
+      <h2>Fazer uma operação</h2>
+      <form id="formOperacao" class="formulario">
+        <label>Ativo
+          <select id="ativo"></select>
+        </label>
+        <label>Operação
+          <select id="operacao">
+            <option value="compra">Comprar</option>
+            <option value="venda">Vender</option>
+          </select>
+        </label>
+        <label>Quantidade
+          <input type="number" id="quantidade" min="0" step="1" value="1" />
+        </label>
+        <button type="submit" class="btn">Confirmar</button>
+      </form>
+      <p id="estimativa" class="nota"></p>
+      <p class="mensagem" id="mensagem" role="alert"></p>
+    </section>
+
+    <h2>Minhas posições</h2>
+    <div class="tabela-scroll" style="margin-bottom:2rem">
+      <table class="tabela-resultado">
+        <thead>
+          <tr><th>Ativo</th><th>Qtd.</th><th>Preço médio</th><th>Preço atual</th><th>Valor atual</th><th>Resultado</th></tr>
+        </thead>
+        <tbody id="posicoes"></tbody>
+      </table>
+    </div>
+
+    <h2>Últimas operações</h2>
+    <div class="tabela-scroll" style="margin-bottom:1.5rem">
+      <table class="tabela-resultado">
+        <thead>
+          <tr><th>Data</th><th>Operação</th><th>Ativo</th><th>Qtd.</th><th>Preço</th><th>Total</th></tr>
+        </thead>
+        <tbody id="historico"></tbody>
+      </table>
+    </div>
+
+    <button type="button" class="btn-secundario" id="reiniciar">Recomeçar do zero</button>
+    <p class="nota" id="fonte" style="margin-top:1rem"></p>
+    <p class="nota">Os preços de ações têm atraso de cerca de 30 minutos e não há taxas nem impostos nesta simulação. É só para treinar.</p>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span data-ano>2026</span> Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener" class="linktree-icon" title="Meu Linktree">🔗</a>
+    </div>
+    <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="dados.js"></script>
+  <script src="carteira.js"></script>
+</body>
+</html>

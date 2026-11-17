@@ -359,3 +359,72 @@ footer {
   .hero h1 { font-size: 2rem; }
   .hero p { font-size: 1rem; }
 }
+
+
+/* ==========================================================
+   Etapa 2: comparar, carteira, educação
+   ========================================================== */
+.card.destaque { border-color: var(--cor-destaque); box-shadow: 0 0 0 2px var(--cor-destaque); }
+
+.positivo { color: var(--positivo); }
+.negativo { color: var(--negativo); }
+
+section[hidden] { display: none; }
+
+.abas {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--borda);
+  padding-bottom: 0.75rem;
+}
+
+.abas button {
+  font: inherit;
+  border: 1px solid var(--borda);
+  background: var(--bg-card-2);
+  color: var(--texto);
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.abas button.ativo {
+  background: var(--bg-btn);
+  color: var(--texto-btn);
+  border-color: transparent;
+}
+
+progress {
+  width: 100%;
+  height: 12px;
+  margin: 0.4rem 0 1.25rem;
+  accent-color: var(--cor-destaque);
+}
+
+.card-conteudo.concluido { border-color: var(--positivo); }
+.card-conteudo h3 { color: var(--titulo); }
+
+.quiz-opcao {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  margin: 0.5rem 0;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--bg-card-2);
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.quiz-opcao:hover:not(:disabled) { border-color: var(--cor-destaque); }
+.quiz-opcao:disabled { cursor: default; }
+.quiz-opcao.certa { border-color: var(--positivo); box-shadow: 0 0 0 2px var(--positivo); }
+.quiz-opcao.errada { border-color: var(--negativo); box-shadow: 0 0 0 2px var(--negativo); }
+
+a.btn-secundario { display: inline-block; color: var(--texto); }
+
+:focus-visible { outline: 3px solid var(--cor-destaque); outline-offset: 2px; }

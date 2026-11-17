@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparar investimentos - Easy Finance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="tema.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <a class="navbar-brand" href="index.html">EasyFinance</a>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="simulador.html">Simulador</a></li>
+        <li><a href="comparar.html" class="ativo">Comparar</a></li>
+        <li><a href="carteira.html">Carteira</a></li>
+        <li><a href="educacao.html">Educação</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="pagina">
+    <h1>Poupança × CDB × Tesouro Selic</h1>
+    <p class="nota" style="margin-bottom:1rem">Coloque o mesmo dinheiro nos três e veja quanto sobra no bolso depois do Imposto de Renda.</p>
+
+    <form id="formComparar" class="formulario">
+      <label>Investimento inicial (R$)
+        <input type="number" id="inicial" value="5000" min="0" step="0.01" />
+      </label>
+      <label>Aporte mensal (R$)
+        <input type="number" id="aporte" value="300" min="0" step="0.01" />
+      </label>
+      <label>Prazo
+        <input type="number" id="periodo" value="2" min="1" step="1" />
+      </label>
+      <label>Unidade do prazo
+        <select id="prazoTipo">
+          <option value="meses">meses</option>
+          <option value="anos" selected>anos</option>
+        </select>
+      </label>
+      <label>Selic meta (% ao ano)
+        <input type="number" id="selic" value="14.5" step="0.01" />
+      </label>
+      <label>CDI (% ao ano)
+        <input type="number" id="cdi" value="14.4" step="0.01" />
+      </label>
+      <label>CDB paga (% do CDI)
+        <input type="number" id="cdbPct" value="100" min="0" step="1" />
+      </label>
+      <label>Inflação (% ao ano)
+        <input type="number" id="inflacao" value="4.5" step="0.01" />
+      </label>
+      <button type="submit" class="btn">Comparar</button>
+    </form>
+
+    <div class="atalhos">
+      <button type="button" class="btn-secundario" id="buscarTaxas">Buscar taxas atuais (Banco Central)</button>
+      <span class="nota" id="statusTaxas"></span>
+    </div>
+
+    <p class="mensagem" id="mensagem" role="alert"></p>
+
+    <div class="resumo" id="resumo"></div>
+
+    <div class="grafico-box">
+      <canvas id="graficoComparar" height="110"></canvas>
+    </div>
+
+    <section class="card-conteudo">
+      <h2>Como ler esta comparação</h2>
+      <ul>
+        <li><strong>Poupança:</strong> não paga Imposto de Renda. Quando a Selic está acima de 8,5% ao ano, rende 0,5% ao mês (mais a TR, que aqui foi ignorada).</li>
+        <li><strong>CDB:</strong> rende uma porcentagem do CDI e paga Imposto de Renda regressivo sobre o ganho: 22,5% até 180 dias, 20% até 360, 17,5% até 720 e 15% depois disso. Tem garantia do FGC, com limite por CPF e por instituição.</li>
+        <li><strong>Tesouro Selic:</strong> título do governo que acompanha a Selic, com o mesmo Imposto de Renda regressivo. Aqui foram ignoradas a taxa de custódia da B3 e o IOF dos primeiros 30 dias.</li>
+        <li><strong>Cada aporte tem o seu prazo:</strong> o Imposto de Renda é calculado separadamente para cada depósito, de acordo com o tempo que ele ficou investido.</li>
+      </ul>
+      <p class="nota">Simulação simplificada para estudo. Taxas reais mudam todo dia, e esta página não é recomendação de investimento.</p>
+    </section>
+
+    <h2>Valor líquido mês a mês</h2>
+    <div class="tabela-scroll">
+      <table class="tabela-resultado">
+        <thead>
+          <tr><th>Mês</th><th>Poupança</th><th>CDB</th><th>Tesouro Selic</th></tr>
+        </thead>
+        <tbody id="tabelaResultado"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span data-ano>2026</span> Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener" class="linktree-icon" title="Meu Linktree">🔗</a>
+    </div>
+    <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="dados.js"></script>
+  <script src="comparar.js"></script>
+</body>
+</html>

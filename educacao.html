@@ -14,6 +14,8 @@
       <ul class="menu">
         <li><a href="index.html">Início</a></li>
         <li><a href="simulador.html">Simulador</a></li>
+        <li><a href="comparar.html">Comparar</a></li>
+        <li><a href="carteira.html">Carteira</a></li>
         <li><a href="educacao.html" class="ativo">Educação</a></li>
         <li><a href="sobre.html">Sobre</a></li>
         <li><button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button></li>
@@ -24,49 +26,52 @@
   <main class="pagina estreita">
     <h1>Educação Financeira</h1>
 
-    <section class="card-conteudo">
-      <h2>📍 Comece por Aqui</h2>
-      <ul>
-        <li><strong>O que é inflação?</strong> — É a perda do poder de compra. Quanto maior a inflação, menos você consegue comprar com o mesmo dinheiro.</li>
-        <li><strong>O que é a Selic?</strong> — É a taxa básica de juros da economia. Quando está alta, rende mais deixar dinheiro em renda fixa.</li>
-        <li><strong>Liquidez</strong> — Quanto mais rápido você consegue resgatar seu investimento, maior a liquidez.</li>
-        <li><strong>Prazo de vencimento</strong> — É quanto tempo você vai deixar o dinheiro investido. Alguns investimentos só valem a pena se esperados até o fim.</li>
-      </ul>
-      <p class="nota">Veja a Selic, o CDI e a inflação de hoje na <a href="index.html">página inicial</a> e teste os números no <a href="simulador.html">simulador</a>.</p>
+    <div class="abas">
+      <button type="button" class="ativo" data-aba="trilha">🧭 Trilha</button>
+      <button type="button" data-aba="glossario">📖 Glossário</button>
+      <button type="button" data-aba="quiz">🎯 Quiz</button>
+      <button type="button" data-aba="recursos">📚 Para continuar</button>
+    </div>
+
+    <section id="aba-trilha">
+      <p id="progressoTexto" class="nota"></p>
+      <progress id="progresso" max="6" value="0"></progress>
+      <div id="trilha"></div>
     </section>
 
-    <section class="card-conteudo">
-      <h2>💡 Tipos de Investimento</h2>
-      <ul>
-        <li><strong>Ações:</strong> Participação em empresas. Você vira sócio e pode lucrar com dividendos e valorização.</li>
-        <li><strong>FIIs:</strong> Fundos Imobiliários que investem em imóveis e pagam dividendos mensais.</li>
-        <li><strong>Renda Fixa:</strong> Títulos como CDB, LCI e Tesouro Direto com rendimentos previsíveis.</li>
-        <li><strong>Criptoativos:</strong> Moedas digitais como Bitcoin e Ethereum — mais voláteis, mas com alto potencial.</li>
-      </ul>
+    <section id="aba-glossario" hidden>
+      <input type="search" id="busca" placeholder="Buscar um termo (ex.: CDI, FII, inflação)" aria-label="Buscar no glossário" style="width:100%;margin-bottom:0.75rem" />
+      <div class="filtros" id="categorias"></div>
+      <div id="listaTermos"></div>
+      <p id="semResultado" class="nota" hidden>Nenhum termo encontrado. Tente outra palavra.</p>
     </section>
 
-    <section class="card-conteudo">
-      <h2>🎙️ Educadores Recomendados</h2>
-      <ul>
-        <li><strong>Thiago Nigro</strong> — Autor de "Do Mil ao Milhão". <a href="https://www.youtube.com/@primorico" target="_blank" rel="noopener">YouTube</a></li>
-        <li><strong>Bruno Perini</strong> — Criador do "Você Mais Rico". <a href="https://youtube.com/@brunoperini" target="_blank" rel="noopener">YouTube</a></li>
-        <li><strong>Gustavo Cerbasi</strong> — Especialista em finanças familiares. <a href="https://www.youtube.com/@GustavocerbasiBr" target="_blank" rel="noopener">YouTube</a></li>
-      </ul>
+    <section id="aba-quiz" hidden>
+      <div id="quiz"></div>
     </section>
 
-    <section class="card-conteudo">
-      <h2>📚 Livros Essenciais</h2>
-      <ul>
-        <li><strong>Do Mil ao Milhão</strong> – Thiago Nigro</li>
-        <li><strong>Casais Inteligentes Enriquecem Juntos</strong> – Gustavo Cerbasi</li>
-        <li><strong>O Homem Mais Rico da Babilônia</strong> – George S. Clason</li>
-      </ul>
-    </section>
-
-    <section class="card-conteudo">
-      <h2>🔗 Meu Linktree</h2>
-      <p>Acesse todos os meus canais e conteúdos:</p>
-      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener">🌐 linktr.ee/brunosblemos</a>
+    <section id="aba-recursos" hidden>
+      <div class="card-conteudo">
+        <h2>🎙️ Educadores Recomendados</h2>
+        <ul>
+          <li><strong>Thiago Nigro</strong> — Autor de "Do Mil ao Milhão". <a href="https://www.youtube.com/@primorico" target="_blank" rel="noopener">YouTube</a></li>
+          <li><strong>Bruno Perini</strong> — Criador do "Você Mais Rico". <a href="https://youtube.com/@brunoperini" target="_blank" rel="noopener">YouTube</a></li>
+          <li><strong>Gustavo Cerbasi</strong> — Especialista em finanças familiares. <a href="https://www.youtube.com/@GustavocerbasiBr" target="_blank" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+      <div class="card-conteudo">
+        <h2>📚 Livros Essenciais</h2>
+        <ul>
+          <li><strong>Do Mil ao Milhão</strong> – Thiago Nigro</li>
+          <li><strong>Casais Inteligentes Enriquecem Juntos</strong> – Gustavo Cerbasi</li>
+          <li><strong>O Homem Mais Rico da Babilônia</strong> – George S. Clason</li>
+        </ul>
+      </div>
+      <div class="card-conteudo">
+        <h2>🔗 Meu Linktree</h2>
+        <p>Acesse todos os meus canais e conteúdos:</p>
+        <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener">🌐 linktr.ee/brunosblemos</a>
+      </div>
     </section>
   </main>
 
@@ -77,5 +82,7 @@
     </div>
     <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
   </footer>
+
+  <script src="educacao.js"></script>
 </body>
 </html>
