@@ -1,4 +1,4 @@
-@@ -23,73 +23,19 @@ const icones = {
+Easy Finance const icones = {
 
 const API_KEY_FMP = '2jQp09ts8rYRQfpJRSMbl2rYWe3cmrNj';
 
