@@ -1,38 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sobre - Easy Finance</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .sobre-mim {
-      max-width: 600px;
-      margin: 40px auto;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      padding: 0 20px;
-    }
-    .foto-sobre {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 20px auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      display: block;
-    }
-    .sobre-mim h2 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-      color: #0b515a;
-    }
-    .sobre-mim p {
-      font-size: 1.1rem;
-      color: #333;
-      line-height: 1.5;
-    }
-  </style>
+  <script src="tema.js"></script>
 </head>
 <body>
   <header class="navbar">
@@ -43,6 +16,7 @@
         <li><a href="simulador.html">Simulador</a></li>
         <li><a href="educacao.html">Educação</a></li>
         <li><a href="sobre.html" class="ativo">Sobre</a></li>
+        <li><button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button></li>
       </ul>
     </nav>
   </header>
@@ -60,7 +34,11 @@
   </main>
 
   <footer>
-    <p>© 2025 Easy Finance — por Bruno Lemos</p>
+    <div class="footer-content">
+      <p>© <span data-ano>2026</span> Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener" class="linktree-icon" title="Meu Linktree">🔗</a>
+    </div>
+    <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
   </footer>
 </body>
 </html>

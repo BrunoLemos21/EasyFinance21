@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulador - Easy Finance</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="tema.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <header class="navbar">
@@ -16,66 +17,90 @@
         <li><a href="simulador.html" class="ativo">Simulador</a></li>
         <li><a href="educacao.html">Educação</a></li>
         <li><a href="sobre.html">Sobre</a></li>
-        <li><button id="toggle-theme" class="theme-btn">🌓</button></li>
+        <li><button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button></li>
       </ul>
     </nav>
   </header>
 
-  <main class="main-container" style="padding: 2rem; max-width: 1000px; margin: auto;">
-    <h1 class="titulo">Simulador de Investimentos</h1>
-    <form id="formSimulador" class="formulario" style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2rem;">
-      <label>Investimento Inicial (R$):
-        <input type="number" id="inicial" value="1000" step="0.01" />
+  <main class="pagina">
+    <h1>Simulador de Investimentos</h1>
+
+    <form id="formSimulador" class="formulario">
+      <label>Investimento inicial (R$)
+        <input type="number" id="inicial" value="1000" min="0" step="0.01" />
       </label>
-      <label>Aporte Mensal (R$):
-        <input type="number" id="aporte" value="200" step="0.01" />
+      <label>Aporte mensal (R$)
+        <input type="number" id="aporte" value="200" min="0" step="0.01" />
       </label>
-      <label>Taxa de Juros (% ao mês):
-        <input type="number" id="taxa" value="0.7" step="0.1" />
+      <label>Taxas informadas
+        <select id="base">
+          <option value="ano" selected>ao ano</option>
+          <option value="mes">ao mês</option>
+        </select>
       </label>
-      <label>Prazo (meses):
-        <input type="number" id="periodo" value="12" />
+      <label>Rendimento (%)
+        <input type="number" id="taxa" value="10" step="0.01" />
       </label>
-      <label>Inflação mensal (%):
-        <input type="number" id="inflacao" value="0.4" step="0.1" />
+      <label>Inflação (%)
+        <input type="number" id="inflacao" value="4.5" step="0.01" />
+      </label>
+      <label>Prazo
+        <input type="number" id="periodo" value="12" min="1" step="1" />
+      </label>
+      <label>Unidade do prazo
+        <select id="prazoTipo">
+          <option value="meses" selected>meses</option>
+          <option value="anos">anos</option>
+        </select>
       </label>
       <button type="submit" class="btn">Simular</button>
     </form>
 
-    <canvas id="graficoSimulador" height="100" class="grafico" style="margin-bottom: 2rem;"></canvas>
+    <div class="atalhos">
+      <button type="button" class="btn-secundario" id="usarCDI">Usar CDI atual como rendimento</button>
+      <button type="button" class="btn-secundario" id="usarIPCA">Usar IPCA (12 meses) como inflação</button>
+      <span class="nota" id="statusBCB"></span>
+    </div>
 
-    <h2 class="titulo">Resultado mês a mês</h2>
-    <div class="tabela-scroll" style="overflow-x: auto;">
-      <table class="tabela-resultado" style="width: 100%; border-collapse: collapse;">
+    <p class="mensagem" id="mensagem" role="alert"></p>
+
+    <div class="resumo" id="resumo"></div>
+
+    <div class="grafico-box">
+      <canvas id="graficoSimulador" height="110"></canvas>
+    </div>
+
+    <h2>Resultado mês a mês</h2>
+    <div class="tabela-scroll">
+      <table class="tabela-resultado">
         <thead>
           <tr>
             <th>Mês</th>
-            <th>Apenas Inicial (Bruto)</th>
-            <th>Inicial + Aportes (Bruto)</th>
-            <th>Apenas Inicial (Real)</th>
-            <th>Inicial + Aportes (Real)</th>
+            <th>Apenas inicial (bruto)</th>
+            <th>Inicial + aportes (bruto)</th>
+            <th>Apenas inicial (real)</th>
+            <th>Inicial + aportes (real)</th>
           </tr>
         </thead>
         <tbody id="tabelaResultado"></tbody>
       </table>
     </div>
+
+    <p class="nota">
+      Como ler: "bruto" é o valor sem descontar a inflação; "real" é o mesmo valor em poder de compra de hoje.
+      O aporte é feito no início de cada mês. A simulação não desconta Imposto de Renda nem taxas, então o resultado
+      de um investimento real tende a ser um pouco menor. É uma ferramenta educativa, não uma promessa de rendimento.
+    </p>
   </main>
 
   <footer>
     <div class="footer-content">
-      <p>© 2025 Easy Finance — por Bruno Lemos</p>
-      <a href="https://linktr.ee/brunosblemos" target="_blank" class="linktree-icon">🔗</a>
+      <p>© <span data-ano>2026</span> Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener" class="linktree-icon" title="Meu Linktree">🔗</a>
     </div>
+    <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
   </footer>
 
-  <script src="simulador.js" defer></script>
-  <script>
-    document.getElementById('toggle-theme').addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-  </script>
+  <script src="simulador.js"></script>
 </body>
 </html>

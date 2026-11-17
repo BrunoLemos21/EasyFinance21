@@ -1,4 +1,9 @@
-/* Reset e base */
+/* ==========================================================
+   Easy Finance - estilos
+   Dica: para mudar as cores do site inteiro, mexa só nas
+   variáveis logo abaixo (:root = tema claro, [data-theme="dark"] = tema escuro).
+   ========================================================== */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,32 +11,47 @@
 }
 
 :root {
-  --cor-principal: rgba(11, 81, 90, 0.996);
-  --fundo-claro: #f5f7fa;
-  --texto-claro: #333;
-  --bg-card: #ffffff;
+  --cor-principal: #0b515a;   /* barra do topo e rodapé */
+  --cor-destaque: #168a99;
+  --fundo: #f5f7fa;
+  --texto: #1f2933;
+  --texto-suave: #52606d;
+  --titulo: #0b515a;
+  --link: #0b515a;
+  --bg-card: #ffffff;         /* fundo das seções */
+  --bg-card-2: #f0f8f8;       /* fundo dos cartões */
+  --borda: #d5e1e6;
   --bg-btn: #0b515a;
-  --bg-escuro: #222;
-  --texto-escuro: #f1f1f1;
-  --linktree-bg: #0b515a;
+  --texto-btn: #ffffff;
+  --positivo: #138a36;
+  --negativo: #c62828;
 }
 
 [data-theme="dark"] {
-  --fundo-claro: #111;
-  --texto-claro: #f5f5f5;
-  --bg-card: #1e1e1e;
-  --bg-btn: #ffffff;
-  --texto-escuro: #0b515a;
+  --fundo: #121416;
+  --texto: #ececec;
+  --texto-suave: #a9b4bd;
+  --titulo: #5fd0de;
+  --link: #5fd0de;
+  --bg-card: #1b1e21;
+  --bg-card-2: #23282c;
+  --borda: #333b41;
+  --bg-btn: #168a99;
+  --texto-btn: #ffffff;
+  --positivo: #4cd37b;
+  --negativo: #ff7b7b;
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: var(--fundo-claro);
-  color: var(--texto-claro);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: var(--fundo);
+  color: var(--texto);
   line-height: 1.6;
 }
 
-/* Cabeçalho */
+a { color: var(--link); }
+
+/* ---------- Cabeçalho ---------- */
 .navbar {
   background-color: var(--cor-principal);
   display: flex;
@@ -40,6 +60,7 @@ body {
   padding: 1rem 2rem;
   color: white;
   flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .navbar a {
@@ -69,54 +90,56 @@ body {
   color: white;
 }
 
-/* Hero */
+/* ---------- Início (hero) ---------- */
 .hero {
-  background: linear-gradient(135deg, var(--cor-principal), #168a99);
+  background: linear-gradient(135deg, #0b515a, #168a99);
   color: white;
   padding: 3rem 2rem;
   text-align: center;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-}
+.hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+.hero p  { font-size: 1.2rem; margin-bottom: 2rem; }
 
 .btn {
+  display: inline-block;
   background-color: var(--bg-btn);
-  color: white;
+  color: var(--texto-btn);
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: bold;
+  font-size: 1rem;
   text-decoration: none;
   transition: background 0.3s;
   border: none;
   cursor: pointer;
 }
 
-.btn:hover {
-  background-color: #168a99;
-}
+.btn:hover { background-color: var(--cor-destaque); }
 
-/* Seções */
-.ativos, .noticias, .sobre {
-  padding: 2rem;
+/* No topo (fundo verde) o botão fica branco para aparecer bem nos dois temas */
+.hero .btn { background: #ffffff; color: #0b515a; }
+.hero .btn:hover { background: #e3f4f6; }
+
+/* ---------- Seções ---------- */
+.ativos, .noticias, .sobre, .indicadores-secao {
+  padding: 2rem max(2rem, calc((100% - 1200px) / 2));
   background-color: var(--bg-card);
   margin-bottom: 1.5rem;
 }
 
-.ativos h2,
-.noticias h2,
-.sobre h2 {
-  color: var(--cor-principal);
+.ativos h2, .noticias h2, .sobre h2, .indicadores-secao h2 {
+  color: var(--titulo);
   margin-bottom: 1rem;
 }
 
+.nota {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+/* ---------- Cartões ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -124,32 +147,182 @@ body {
 }
 
 .card {
-  background: #f0f8f8;
+  background: var(--bg-card-2);
+  border: 1px solid var(--borda);
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.3s;
+  transition: box-shadow 0.3s;
 }
 
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+.card:hover { box-shadow: 0 0 12px rgba(0, 0, 0, 0.18); }
+.card[hidden] { display: none; }
+
+.card h3 { font-size: 1.05rem; margin-bottom: 0.2rem; color: var(--titulo); }
+.card .codigo { color: var(--texto-suave); font-size: 0.85rem; }
+.card .preco { font-size: 1.45rem; font-weight: 700; margin-top: 0.4rem; }
+.card .variacao { font-weight: 600; min-height: 1.6em; }
+.card .variacao.positivo { color: var(--positivo); }
+.card .variacao.negativo { color: var(--negativo); }
+.card .detalhe { color: var(--texto-suave); font-size: 0.85rem; }
+
+/* ---------- Filtros ---------- */
+.filtros {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
-/* RSS Feed */
-.rss-feed {
-  list-style: none;
-  padding-left: 1rem;
+.filtros button {
+  font: inherit;
+  border: 1px solid var(--borda);
+  background: var(--bg-card-2);
+  color: var(--texto);
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  cursor: pointer;
 }
+
+.filtros button.ativo {
+  background: var(--bg-btn);
+  color: var(--texto-btn);
+  border-color: transparent;
+}
+
+/* ---------- Notícias ---------- */
+.rss-feed { list-style: none; }
 
 .rss-feed li a {
   text-decoration: none;
-  color: var(--cor-principal);
+  color: var(--link);
   display: block;
-  margin-bottom: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--borda);
 }
 
-/* Rodapé */
+.rss-feed li a:hover { text-decoration: underline; }
+
+/* ---------- Páginas internas ---------- */
+.pagina {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.pagina.estreita { max-width: 900px; }
+
+.pagina h1 { color: var(--titulo); margin-bottom: 1.25rem; }
+.pagina h2 { color: var(--titulo); margin-bottom: 0.75rem; }
+
+.card-conteudo {
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-conteudo ul { padding-left: 1.25rem; }
+.card-conteudo li { margin-bottom: 0.5rem; }
+
+/* ---------- Simulador ---------- */
+.formulario {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 1rem;
+  align-items: end;
+}
+
+.formulario label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+
+input, select {
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--texto);
+}
+
+.atalhos {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.btn-secundario {
+  font: inherit;
+  background: var(--bg-card-2);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-secundario:hover { border-color: var(--cor-destaque); }
+
+.mensagem { color: var(--negativo); font-weight: 600; margin-bottom: 1rem; }
+
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.resumo .card .preco { font-size: 1.3rem; }
+
+.grafico-box {
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tabela-scroll { overflow-x: auto; }
+
+.tabela-resultado { width: 100%; border-collapse: collapse; }
+
+.tabela-resultado th,
+.tabela-resultado td {
+  padding: 0.5rem 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid var(--borda);
+  white-space: nowrap;
+}
+
+.tabela-resultado th:first-child,
+.tabela-resultado td:first-child { text-align: left; }
+
+.tabela-resultado thead th { background: var(--bg-card-2); }
+
+/* ---------- Sobre ---------- */
+.sobre-mim { max-width: 600px; margin: 40px auto; text-align: center; padding: 0 20px; }
+
+.foto-sobre {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  display: block;
+}
+
+.sobre-mim h2 { font-size: 2rem; margin-bottom: 10px; color: var(--titulo); }
+.sobre-mim p { font-size: 1.1rem; line-height: 1.5; }
+
+/* ---------- Rodapé ---------- */
 footer {
   background-color: var(--cor-principal);
   color: white;
@@ -165,34 +338,24 @@ footer {
   flex-wrap: wrap;
 }
 
+.aviso-rodape { font-size: 0.8rem; opacity: 0.85; margin-top: 0.4rem; }
+
 .linktree-icon {
   font-size: 1.5rem;
   color: white;
   text-decoration: none;
-  background-color: var(--linktree-bg);
+  background-color: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   padding: 0.5rem;
   transition: background 0.3s;
 }
 
-.linktree-icon:hover {
-  background-color: #168a99;
-}
+.linktree-icon:hover { background-color: var(--cor-destaque); }
 
-/* Responsivo */
+/* ---------- Celular ---------- */
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .menu {
-    width: 100%;
-    justify-content: flex-start;
-  }
-  .hero h1 {
-    font-size: 2rem;
-  }
-  .hero p {
-    font-size: 1rem;
-  }
-} 
+  .navbar { flex-direction: column; align-items: flex-start; }
+  .menu { width: 100%; justify-content: flex-start; }
+  .hero h1 { font-size: 2rem; }
+  .hero p { font-size: 1rem; }
+}

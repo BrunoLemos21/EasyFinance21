@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Educação Financeira - Easy Finance</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="tema.js"></script>
 </head>
 <body>
   <header class="navbar">
@@ -15,13 +16,13 @@
         <li><a href="simulador.html">Simulador</a></li>
         <li><a href="educacao.html" class="ativo">Educação</a></li>
         <li><a href="sobre.html">Sobre</a></li>
-        <li><button id="toggle-theme" class="theme-btn">🌓</button></li>
+        <li><button id="toggle-theme" class="theme-btn" title="Alternar tema">🌓</button></li>
       </ul>
     </nav>
   </header>
 
-  <main style="padding: 2rem; max-width: 900px; margin: auto;">
-    <h1 style="color: var(--cor-principal); margin-bottom: 1.5rem;">Educação Financeira</h1>
+  <main class="pagina estreita">
+    <h1>Educação Financeira</h1>
 
     <section class="card-conteudo">
       <h2>📍 Comece por Aqui</h2>
@@ -31,6 +32,7 @@
         <li><strong>Liquidez</strong> — Quanto mais rápido você consegue resgatar seu investimento, maior a liquidez.</li>
         <li><strong>Prazo de vencimento</strong> — É quanto tempo você vai deixar o dinheiro investido. Alguns investimentos só valem a pena se esperados até o fim.</li>
       </ul>
+      <p class="nota">Veja a Selic, o CDI e a inflação de hoje na <a href="index.html">página inicial</a> e teste os números no <a href="simulador.html">simulador</a>.</p>
     </section>
 
     <section class="card-conteudo">
@@ -46,9 +48,9 @@
     <section class="card-conteudo">
       <h2>🎙️ Educadores Recomendados</h2>
       <ul>
-        <li><strong>Thiago Nigro</strong> — Autor de "Do Mil ao Milhão". <a href="https://www.youtube.com/@primorico" target="_blank">YouTube</a></li>
-        <li><strong>Bruno Perini</strong> — Criador do “Você Mais Rico”. <a href="https://youtube.com/@brunoperini" target="_blank">YouTube</a></li>
-        <li><strong>Gustavo Cerbasi</strong> — Especialista em finanças familiares. <a href="https://www.youtube.com/@GustavocerbasiBr" target="_blank">YouTube</a></li>
+        <li><strong>Thiago Nigro</strong> — Autor de "Do Mil ao Milhão". <a href="https://www.youtube.com/@primorico" target="_blank" rel="noopener">YouTube</a></li>
+        <li><strong>Bruno Perini</strong> — Criador do "Você Mais Rico". <a href="https://youtube.com/@brunoperini" target="_blank" rel="noopener">YouTube</a></li>
+        <li><strong>Gustavo Cerbasi</strong> — Especialista em finanças familiares. <a href="https://www.youtube.com/@GustavocerbasiBr" target="_blank" rel="noopener">YouTube</a></li>
       </ul>
     </section>
 
@@ -64,25 +66,16 @@
     <section class="card-conteudo">
       <h2>🔗 Meu Linktree</h2>
       <p>Acesse todos os meus canais e conteúdos:</p>
-      <a href="https://linktr.ee/brunosblemos" target="_blank">🌐 linktr.ee/brunosblemos</a>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener">🌐 linktr.ee/brunosblemos</a>
     </section>
   </main>
 
   <footer>
     <div class="footer-content">
-      <p>© 2025 Easy Finance — por Bruno Lemos</p>
-      <a href="https://linktr.ee/brunosblemos" target="_blank" class="linktree-icon">🔗</a>
+      <p>© <span data-ano>2026</span> Easy Finance — por Bruno Lemos</p>
+      <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener" class="linktree-icon" title="Meu Linktree">🔗</a>
     </div>
+    <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
   </footer>
-
-  <script>
-    document.getElementById('toggle-theme').addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-  </script>
 </body>
 </html>
-
