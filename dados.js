@@ -100,3 +100,14 @@ function buscarIndicador(serie) {
     return { valor: parseFloat(json[0].valor), data: json[0].data };
   });
 }
+
+// Histórico de cotações dos últimos 30 dias (AwesomeAPI). Exemplo de par: 'USD-BRL'
+function buscarHistorico(par) {
+  return comCache('ef_hist_' + par, 60, async () => {
+    const json = await buscarJSON('https://economia.awesomeapi.com.br/json/daily/' + par + '/30');
+    return json
+      .map(x => ({ t: Number(x.timestamp) * 1000, v: parseFloat(x.bid) }))
+      .filter(x => isFinite(x.v))
+      .reverse(); // a API devolve do mais novo para o mais antigo
+  });
+}

@@ -428,3 +428,72 @@ progress {
 a.btn-secundario { display: inline-block; color: var(--texto); }
 
 :focus-visible { outline: 3px solid var(--cor-destaque); outline-offset: 2px; }
+
+
+/* ==========================================================
+   Etapa 3: histórico, níveis, compartilhar e celular
+   ========================================================== */
+.historico-secao {
+  padding: 2rem max(2rem, calc((100% - 1200px) / 2));
+  background-color: var(--bg-card);
+  margin-bottom: 1.5rem;
+}
+
+.historico-secao h2 { color: var(--titulo); margin-bottom: 1rem; }
+
+.hist-resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hist-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card-2);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+}
+
+.hist-rotulo { color: var(--texto-suave); font-size: 0.8rem; }
+
+.grafico-box.hist {
+  position: relative;
+  height: 280px;
+  margin-bottom: 0.5rem;
+}
+
+.nivel-titulo { margin: 1.75rem 0 0.75rem; color: var(--titulo); }
+
+.btn-share {
+  font: inherit;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+
+.btn-share:hover { background: var(--cor-destaque); }
+
+@media (max-width: 600px) {
+  .navbar { padding: 0.75rem 1rem; }
+  .navbar .menu { gap: 0.4rem 0.9rem; font-size: 0.95rem; }
+  .hero { padding: 2rem 1rem; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: 1rem; margin-bottom: 1.25rem; }
+  .ativos, .noticias, .sobre, .indicadores-secao, .historico-secao { padding: 1.25rem 1rem; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.75rem; }
+  .card { padding: 0.8rem; }
+  .card .preco { font-size: 1.2rem; }
+  .pagina { padding: 1.25rem 0.9rem; }
+  .card-conteudo { padding: 1rem; }
+  .tabela-resultado th, .tabela-resultado td { padding: 0.4rem 0.5rem; font-size: 0.9rem; }
+  .grafico-box.hist { height: 230px; }
+  .abas button { flex: 1 1 auto; }
+  footer { padding: 1rem; }
+}

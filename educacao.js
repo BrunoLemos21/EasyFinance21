@@ -59,6 +59,94 @@ const MODULOS = [
       'Antes de arriscar, muitos educadores recomendam ter uma reserva de emergência, que costuma ser de 3 a 12 meses de gastos, em algo seguro e com resgate rápido.'
     ],
     link: null
+  },
+  {
+    nivel: 'Intermediário',
+    titulo: 'Tesouro Direto: Selic, Prefixado e IPCA+',
+    textos: [
+      'O Tesouro Selic acompanha a taxa Selic e tem pouca oscilação de preço. É o mais usado para reserva de emergência.',
+      'O Tesouro Prefixado define a taxa na hora da compra. Se você segurar até o vencimento, sabe exatamente quanto vai receber.',
+      'O Tesouro IPCA+ paga a inflação mais uma taxa fixa, o que protege o poder de compra no longo prazo.',
+      'Se você vender um título antes do vencimento, o preço pode estar abaixo ou acima do que você pagou (a chamada marcação a mercado). Isso pesa mais nos títulos Prefixado e IPCA+ de prazo longo.'
+    ],
+    link: { href: 'comparar.html', texto: 'Comparar o Tesouro Selic' }
+  },
+  {
+    nivel: 'Intermediário',
+    titulo: 'CDB, LCI e LCA: como ler as ofertas',
+    textos: [
+      'A rentabilidade pode ser pós-fixada (um percentual do CDI, como 100% do CDI), prefixada (taxa fixa) ou híbrida (inflação mais uma taxa).',
+      'Olhe o prazo e a liquidez: alguns títulos permitem resgate a qualquer momento, outros só no vencimento. LCI e LCA costumam ter prazo mínimo de carência.',
+      'Compare sempre o valor líquido, já com Imposto de Renda. LCI e LCA são isentas de IR para pessoa física, então uma taxa menor pode render o mesmo que um CDB.',
+      'Confira a proteção do FGC, que cobre até R$ 250 mil por CPF em cada instituição.'
+    ],
+    link: { href: 'comparar.html', texto: 'Ver o efeito do IR' }
+  },
+  {
+    nivel: 'Intermediário',
+    titulo: 'Como começar a analisar uma ação',
+    textos: [
+      'Preço baixo não significa ação barata. O que importa é quanto você paga pelo que a empresa ganha.',
+      'O P/L é o preço da ação dividido pelo lucro por ação. De forma simplificada, mostra quantos anos de lucro o preço representa.',
+      'O dividend yield é o total de dividendos pagos nos últimos 12 meses dividido pelo preço da ação.',
+      'Indicadores ajudam, mas não bastam: entenda o negócio da empresa, a dívida e o setor, e compare com empresas parecidas.'
+    ],
+    link: { href: 'carteira.html', texto: 'Praticar na carteira fictícia' }
+  },
+  {
+    nivel: 'Intermediário',
+    titulo: 'FIIs: tijolo, papel e indicadores',
+    textos: [
+      'FIIs de tijolo investem em imóveis físicos, como shoppings, galpões logísticos e lajes corporativas. FIIs de papel investem em títulos de crédito do setor imobiliário, como os CRIs.',
+      'O P/VP compara o preço da cota com o valor patrimonial por cota. Perto de 1, a cota é negociada próxima do valor dos ativos do fundo.',
+      'Vacância é a parte dos imóveis desocupada. Quanto maior, menos aluguel entra para ser distribuído.',
+      'Os rendimentos mensais podem variar de um mês para o outro. Eles não são garantidos como numa renda fixa.'
+    ],
+    link: null
+  },
+  {
+    nivel: 'Avançado',
+    titulo: 'Alocação de ativos e rebalanceamento',
+    textos: [
+      'Alocação de ativos é decidir quanto do seu dinheiro vai para cada tipo de investimento: renda fixa, ações, FIIs, moedas e outros.',
+      'Muitos educadores consideram que essa decisão pesa bastante no risco e no resultado da carteira, às vezes mais do que a escolha de cada papel.',
+      'Com o tempo, os preços mudam as proporções. Rebalancear é voltar ao plano, comprando o que ficou para trás ou vendendo o que cresceu demais.',
+      'Use a carteira fictícia para treinar: monte uma divisão e veja como ela se comporta em alguns dias.'
+    ],
+    link: { href: 'carteira.html', texto: 'Montar uma carteira de teste' }
+  },
+  {
+    nivel: 'Avançado',
+    titulo: 'Custos e impostos que comem rentabilidade',
+    textos: [
+      'Pequenos custos fazem diferença ao longo dos anos: taxa de administração de fundos, taxa de performance, corretagem e custódia.',
+      'Nos fundos abertos de renda fixa existe o come-cotas, uma cobrança antecipada de Imposto de Renda feita em maio e novembro, que reduz a quantidade de cotas.',
+      'Para ações e FIIs, as regras de imposto mudam com frequência. Confira sempre a regra atual na Receita Federal ou com um contador.',
+      'Antes de investir, pergunte: quais taxas existem, quando são cobradas e quanto sobra depois do imposto?'
+    ],
+    link: null
+  },
+  {
+    nivel: 'Avançado',
+    titulo: 'Psicologia do investidor',
+    textos: [
+      'Emoções atrapalham. O medo faz vender na queda e a euforia faz comprar caro.',
+      'Viés de manada é seguir a multidão sem pensar. Aversão à perda é sentir mais a dor de perder do que o prazer de ganhar o mesmo valor.',
+      'Investir um valor fixo todo mês (aporte regular) reduz o peso de tentar acertar o melhor momento.',
+      'Defina regras antes de investir: objetivo, prazo e quanto de oscilação você aguenta.'
+    ],
+    link: null
+  },
+  {
+    nivel: 'Avançado',
+    titulo: 'Planejamento: objetivos e prazos',
+    textos: [
+      'Cada objetivo tem um prazo. Dinheiro que você vai precisar em poucos meses não combina com investimentos que oscilam muito.',
+      'Objetivos de longo prazo, como a aposentadoria, podem tolerar mais oscilação, porque há tempo para se recuperar.',
+      'Comece anotando o objetivo, o valor e a data. Depois use o simulador para descobrir quanto aportar por mês.',
+      'Revise o plano uma ou duas vezes por ano.'
+    ],
+    link: { href: 'simulador.html', texto: 'Simular meu objetivo' }
   }
 ];
 
@@ -105,7 +193,23 @@ const PERGUNTAS = [
   { p: 'O que é o Tesouro Selic?', o: ['Uma ação de empresa estatal', 'Um título do governo que acompanha a Selic', 'Um fundo imobiliário', 'Uma conta de banco'], r: 1, e: 'É um título público pós-fixado, bastante usado em reserva de emergência.' },
   { p: 'Como funciona o Imposto de Renda regressivo?', o: ['A alíquota sobe com o tempo', 'A alíquota é sempre a mesma', 'A alíquota cai quanto mais tempo o dinheiro fica investido', 'Só vale para ações'], r: 2, e: 'Começa em 22,5% e cai até 15% para prazos acima de 720 dias.' },
   { p: 'O que é um FII?', o: ['Um fundo que investe no setor imobiliário e distribui rendimentos', 'Um tipo de poupança', 'Um imposto sobre imóveis', 'Uma moeda digital'], r: 0, e: 'FII é um fundo imobiliário. Quem tem cotas costuma receber rendimentos mensais.' },
-  { p: 'Onde costuma fazer mais sentido guardar a reserva de emergência?', o: ['Em ações de uma só empresa', 'Em criptoativos', 'Em algo seguro e com resgate rápido', 'Em imóveis'], r: 2, e: 'A reserva precisa estar disponível quando o imprevisto aparecer, então segurança e liquidez vêm primeiro.' }
+  { p: 'Onde costuma fazer mais sentido guardar a reserva de emergência?', o: ['Em ações de uma só empresa', 'Em criptoativos', 'Em algo seguro e com resgate rápido', 'Em imóveis'], r: 2, e: 'A reserva precisa estar disponível quando o imprevisto aparecer, então segurança e liquidez vêm primeiro.' },
+  { n: 2, p: 'O que significa um título prefixado?', o: ['A taxa de rendimento é definida na hora da compra', 'Ele acompanha a Selic', 'Ele paga a inflação do período', 'Ele só pode ser comprado por bancos'], r: 0, e: 'No prefixado você já sabe a taxa combinada. Segurando até o vencimento, sabe também quanto vai receber.' },
+  { n: 2, p: 'O que paga o Tesouro IPCA+?', o: ['Só a taxa Selic', 'A inflação mais uma taxa fixa', 'Um valor fixo em dólar', 'Dividendos de empresas'], r: 1, e: 'Ele combina a variação do IPCA com uma taxa fixa, protegendo o poder de compra.' },
+  { n: 2, p: 'O que é a marcação a mercado de um título?', o: ['Um imposto cobrado no resgate', 'A variação do preço do título se você vender antes do vencimento', 'Uma taxa da corretora', 'O sorteio de títulos'], r: 1, e: 'Antes do vencimento, o preço de venda pode estar acima ou abaixo do preço de compra.' },
+  { n: 2, p: 'Um CDB que paga 110% do CDI rende...', o: ['110% da taxa do CDI', '110% ao ano', '10% ao ano', 'O CDI mais 110%'], r: 0, e: 'É uma porcentagem do CDI. Se o CDI está em 14% ao ano, 110% do CDI equivale a cerca de 15,4% ao ano.' },
+  { n: 2, p: 'O que o P/L de uma ação mostra?', o: ['A relação entre o preço da ação e o lucro por ação', 'O total de dividendos pagos', 'O número de ações da empresa', 'A dívida da empresa'], r: 0, e: 'É o preço dividido pelo lucro por ação, uma forma simples de comparar o preço com o que a empresa ganha.' },
+  { n: 2, p: 'O que é o dividend yield?', o: ['O lucro da empresa no ano', 'Os dividendos dos últimos 12 meses divididos pelo preço da ação', 'A variação do preço no dia', 'A taxa cobrada pela corretora'], r: 1, e: 'Mostra quanto a ação pagou em dividendos em relação ao preço atual.' },
+  { n: 2, p: 'Em que investe um FII de tijolo?', o: ['Em títulos do governo', 'Em imóveis físicos, como shoppings e galpões', 'Em moedas digitais', 'Em ações de bancos'], r: 1, e: 'FIIs de tijolo têm imóveis. Já os de papel investem em títulos de crédito do setor imobiliário.' },
+  { n: 2, p: 'Um P/VP de FII abaixo de 1 indica que...', o: ['O fundo vai quebrar', 'A cota é negociada abaixo do valor patrimonial por cota', 'O fundo não paga rendimentos', 'A cota é isenta de imposto'], r: 1, e: 'Pode ser uma oportunidade ou um sinal de problema. Por isso, é preciso olhar mais indicadores.' },
+  { n: 3, p: 'O que é rebalancear a carteira?', o: ['Vender tudo e recomeçar', 'Voltar às proporções planejadas entre os investimentos', 'Trocar de corretora', 'Investir só no que mais subiu'], r: 1, e: 'Com o tempo os preços mudam as proporções. Rebalancear devolve a carteira ao plano.' },
+  { n: 3, p: 'O que é o come-cotas?', o: ['Uma taxa de corretagem', 'Uma cobrança antecipada de IR em fundos, em maio e novembro', 'Um tipo de dividendo', 'O resgate automático do fundo'], r: 1, e: 'É a cobrança antecipada de Imposto de Renda nos fundos abertos, feita reduzindo a quantidade de cotas.' },
+  { n: 3, p: 'O que é viés de manada?', o: ['Investir só em agronegócio', 'Seguir a decisão da multidão sem análise própria', 'Diversificar demais', 'Vender sempre no lucro'], r: 1, e: 'Seguir a multidão costuma levar a comprar caro na euforia e vender barato no medo.' },
+  { n: 3, p: 'O que é aversão à perda?', o: ['Evitar qualquer investimento', 'Sentir mais a dor de uma perda do que o prazer de um ganho igual', 'Investir só em renda fixa', 'Medo de inflação'], r: 1, e: 'Esse viés leva a decisões ruins, como segurar o que está perdendo ou vender o que está ganhando cedo demais.' },
+  { n: 3, p: 'Por que fazer aportes regulares ajuda?', o: ['Garante lucro', 'Reduz a dependência de acertar o melhor momento de comprar', 'Elimina o risco', 'Dispensa o planejamento'], r: 1, e: 'Comprar aos poucos distribui o preço de entrada ao longo do tempo. Não garante lucro nem elimina risco.' },
+  { n: 3, p: 'Para um objetivo que vence em 6 meses, o que costuma ser mais adequado?', o: ['Ativos de alta volatilidade', 'Investimentos de baixa oscilação e boa liquidez', 'Criptoativos', 'Ações de uma só empresa'], r: 1, e: 'Com pouco tempo, não dá para esperar uma queda passar. Segurança e liquidez vêm primeiro.' },
+  { n: 3, p: 'O que é a taxa de administração de um fundo?', o: ['Um imposto do governo', 'Um percentual cobrado ao ano sobre o patrimônio, que reduz a rentabilidade', 'Um bônus para o investidor', 'O valor mínimo de aplicação'], r: 1, e: 'Ela é descontada da rentabilidade, e fica importante ao longo de muitos anos.' },
+  { n: 3, p: 'O que é alocação de ativos?', o: ['Escolher a corretora', 'Decidir quanto do dinheiro vai para cada tipo de investimento', 'Comprar e vender no mesmo dia', 'Pagar menos imposto'], r: 1, e: 'É a divisão entre renda fixa, ações, FIIs, moedas e outros, de acordo com objetivo, prazo e perfil.' }
 ];
 
 /* ---------- ABAS ---------- */
@@ -130,12 +234,22 @@ const PERGUNTAS = [
   function desenhar() {
     const area = document.getElementById('trilha');
     area.textContent = '';
+    let nivelAtual = '';
 
     MODULOS.forEach((m, i) => {
+      const nivel = m.nivel || 'Iniciante';
+      if (nivel !== nivelAtual) {
+        nivelAtual = nivel;
+        const t = document.createElement('h2');
+        t.className = 'nivel-titulo';
+        t.textContent = 'Nível ' + nivel.toLowerCase();
+        area.appendChild(t);
+      }
+
       const card = document.createElement('div');
       card.className = 'card-conteudo' + (feitos.includes(i) ? ' concluido' : '');
 
-      const h = document.createElement('h2');
+      const h = document.createElement('h3');
       h.textContent = (i + 1) + '. ' + m.titulo + (feitos.includes(i) ? ' ✅' : '');
       card.appendChild(h);
 
@@ -173,7 +287,9 @@ const PERGUNTAS = [
       area.appendChild(card);
     });
 
-    document.getElementById('progresso').value = feitos.length;
+    const barra = document.getElementById('progresso');
+    barra.max = MODULOS.length;
+    barra.value = feitos.length;
     document.getElementById('progressoTexto').textContent =
       feitos.length + ' de ' + MODULOS.length + ' módulos concluídos. Siga a ordem, do básico ao avançado.';
   }
@@ -235,13 +351,20 @@ const PERGUNTAS = [
   desenhar();
 })();
 
-/* ---------- QUIZ ---------- */
+/* ---------- QUIZ (por nível) ---------- */
 (function () {
   const area = document.getElementById('quiz');
   const TOTAL = 5;
+  const NIVEIS = [
+    { n: 1, nome: 'Iniciante' },
+    { n: 2, nome: 'Intermediário' },
+    { n: 3, nome: 'Avançado' },
+    { n: 0, nome: 'Misto' }
+  ];
   let sorteadas = [];
   let atual = 0;
   let acertos = 0;
+  let nivelEscolhido = 1;
 
   function embaralhar(lista) {
     const a = lista.slice();
@@ -252,8 +375,33 @@ const PERGUNTAS = [
     return a;
   }
 
-  function comecar() {
-    sorteadas = embaralhar(PERGUNTAS).slice(0, TOTAL);
+  function telaInicial() {
+    area.textContent = '';
+    const card = document.createElement('div');
+    card.className = 'card-conteudo';
+    const h = document.createElement('h2');
+    h.textContent = 'Escolha o nível do quiz';
+    const p = document.createElement('p');
+    p.style.marginBottom = '0.75rem';
+    p.textContent = 'Cada rodada tem 5 perguntas sorteadas. Comece pelo iniciante e vá subindo.';
+    const linha = document.createElement('div');
+    linha.className = 'atalhos';
+    NIVEIS.forEach(nv => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn-secundario';
+      b.textContent = nv.nome;
+      b.addEventListener('click', () => comecar(nv.n));
+      linha.appendChild(b);
+    });
+    card.append(h, p, linha);
+    area.appendChild(card);
+  }
+
+  function comecar(n) {
+    nivelEscolhido = n;
+    const pool = PERGUNTAS.filter(q => n === 0 || (q.n || 1) === n);
+    sorteadas = embaralhar(pool).slice(0, TOTAL);
     atual = 0;
     acertos = 0;
     mostrarPergunta();
@@ -262,6 +410,7 @@ const PERGUNTAS = [
   function mostrarPergunta() {
     area.textContent = '';
     const q = sorteadas[atual];
+    const total = sorteadas.length;
 
     const card = document.createElement('div');
     card.className = 'card-conteudo';
@@ -269,7 +418,7 @@ const PERGUNTAS = [
     const prog = document.createElement('p');
     prog.className = 'nota';
     prog.style.marginTop = '0';
-    prog.textContent = 'Pergunta ' + (atual + 1) + ' de ' + TOTAL;
+    prog.textContent = 'Pergunta ' + (atual + 1) + ' de ' + total;
 
     const h = document.createElement('h2');
     h.textContent = q.p;
@@ -283,10 +432,10 @@ const PERGUNTAS = [
     proxima.type = 'button';
     proxima.className = 'btn';
     proxima.hidden = true;
-    proxima.textContent = atual + 1 < TOTAL ? 'Próxima pergunta' : 'Ver resultado';
+    proxima.textContent = atual + 1 < total ? 'Próxima pergunta' : 'Ver resultado';
     proxima.addEventListener('click', () => {
       atual++;
-      if (atual < TOTAL) mostrarPergunta(); else mostrarResultado();
+      if (atual < total) mostrarPergunta(); else mostrarResultado();
     });
 
     const botoes = [];
@@ -321,28 +470,37 @@ const PERGUNTAS = [
 
   function mostrarResultado() {
     area.textContent = '';
+    const total = sorteadas.length;
     const card = document.createElement('div');
     card.className = 'card-conteudo';
 
     const h = document.createElement('h2');
-    h.textContent = 'Você acertou ' + acertos + ' de ' + TOTAL;
+    h.textContent = 'Você acertou ' + acertos + ' de ' + total;
     const p = document.createElement('p');
     p.style.margin = '0.5rem 0 1rem';
-    p.textContent = acertos === TOTAL
-      ? 'Perfeito! Você domina o básico.'
-      : acertos >= 3
+    p.textContent = acertos === total
+      ? 'Perfeito! Que tal tentar o próximo nível?'
+      : acertos >= Math.ceil(total * 0.6)
         ? 'Muito bem! Revise os termos que errou no glossário.'
         : 'Bom começo. Volte na trilha e no glossário e tente de novo.';
 
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'btn';
-    b.textContent = 'Jogar de novo';
-    b.addEventListener('click', comecar);
+    const linha = document.createElement('div');
+    linha.className = 'atalhos';
+    const b1 = document.createElement('button');
+    b1.type = 'button';
+    b1.className = 'btn';
+    b1.textContent = 'Jogar de novo';
+    b1.addEventListener('click', () => comecar(nivelEscolhido));
+    const b2 = document.createElement('button');
+    b2.type = 'button';
+    b2.className = 'btn-secundario';
+    b2.textContent = 'Escolher outro nível';
+    b2.addEventListener('click', telaInicial);
+    linha.append(b1, b2);
 
-    card.append(h, p, b);
+    card.append(h, p, linha);
     area.appendChild(card);
   }
 
-  comecar();
+  telaInicial();
 })();

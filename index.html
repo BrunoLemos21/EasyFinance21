@@ -3,10 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Easy Finance</title>
+  <meta name="description" content="Cotações, taxas oficiais do Banco Central, simulador e educação financeira gratuita para quem está começando a investir." />
+  <meta name="theme-color" content="#0b515a" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Easy Finance" />
+  <meta property="og:description" content="Cotações, taxas oficiais do Banco Central, simulador e educação financeira gratuita para quem está começando a investir." />
+  <meta property="og:url" content="https://brunolemos21.github.io/EasyFinance21/index.html" />
+  <meta property="og:image" content="https://brunolemos21.github.io/EasyFinance21/og-image.png" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>" />
+  <title>Easy Finance</title>
   <link rel="stylesheet" href="style.css" />
   <script src="tema.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <header class="navbar">
@@ -51,6 +61,14 @@
       <p class="nota">Moedas e cripto: AwesomeAPI. Ações: brapi.dev (com atraso de cerca de 30 minutos). Os preços são informativos.</p>
     </section>
 
+    <section class="historico-secao" id="historico">
+      <h2>📉 Histórico de 30 dias</h2>
+      <div class="filtros" id="histOpcoes"></div>
+      <div class="hist-resumo" id="histResumo"></div>
+      <div class="grafico-box hist"><canvas id="graficoHist"></canvas></div>
+      <p id="histNota" class="nota"></p>
+    </section>
+
     <section class="noticias">
       <h2>📰 Notícias Recentes</h2>
       <ul id="feedNoticias" class="rss-feed"><li>Carregando notícias...</li></ul>
@@ -66,6 +84,7 @@
     <div class="footer-content">
       <p>© <span data-ano>2026</span> Easy Finance — por Bruno Lemos</p>
       <a href="https://linktr.ee/brunosblemos" target="_blank" rel="noopener" class="linktree-icon" title="Meu Linktree">🔗</a>
+      <button type="button" class="btn-share" data-compartilhar>📤 Compartilhar</button>
     </div>
     <p class="aviso-rodape">Conteúdo educativo. Não é recomendação de investimento.</p>
   </footer>
@@ -73,5 +92,6 @@
   <script src="config.js"></script>
   <script src="dados.js"></script>
   <script src="script.js"></script>
+  <script src="historico.js"></script>
 </body>
 </html>
